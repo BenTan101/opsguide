@@ -1,24 +1,5 @@
-# app
+# OpsGuide
 
-## Project setup
-```
-npm install
-```
+This is a database for opportunities you can look forward to in NUS High.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Hosted at https://bentan101.github.io/opsguide/.
