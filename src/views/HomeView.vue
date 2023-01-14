@@ -11,7 +11,7 @@
 
     <v-btn
       class="mt-2 paleteal--text"
-      color="var(--v-dark)"
+      color="#333f48"
       elevation="5"
       rounded
       to="/search"
@@ -57,11 +57,11 @@
 
 <style scoped>
 h1 {
-  color: var(--v-primary);
+  color: #3ca073;
 }
 
 h2 {
-  color: var(--v-secondary);
+  color: #00a499;
   font-weight: 500;
 }
 </style>

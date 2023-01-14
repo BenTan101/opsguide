@@ -1,5 +1,5 @@
 <template>
-  <v-app :style="cssProps">
+  <v-app>
     <v-app-bar app elevate-on-scroll>
       <v-toolbar-title class="headline text-uppercase">
         <span class="font-weight-light hidden-sm-and-down"
@@ -35,26 +35,16 @@ export default {
   data() {
     return {};
   },
-
-  computed: {
-    cssProps() {
-      var themeColors = {};
-      Object.keys(this.$vuetify.theme.themes.light).forEach((color) => {
-        themeColors[`--v-${color}`] = this.$vuetify.theme.themes.light[color];
-      });
-      return themeColors;
-    },
-  },
 };
 </script>
 
 <style scoped>
 #bottom-bar {
-  background-color: var(--v-dark);
-  color: var(--v-lightteal);
+  background-color: #333f48;
+  color: #b5f0ec;
   padding: 5rem;
 }
 .dark-link {
-  color: var(--v-paleteal);
+  color: #e5ecea;
 }
 </style>

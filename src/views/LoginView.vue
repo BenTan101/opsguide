@@ -5,9 +5,7 @@
     <v-container class="py-8">
       <v-text-field label="Email" filled></v-text-field>
       <v-text-field label="Password" type="password" filled></v-text-field>
-      <v-btn class="mt-2 paleteal--text" color="var(--v-secondary)"
-        >Login</v-btn
-      >
+      <v-btn class="mt-2 paleteal--text" color="#00a499">Login</v-btn>
     </v-container>
     <h3 class="font-weight-light mt-8"><i>New? Register here.</i></h3>
 
@@ -21,15 +19,13 @@
         type="password"
         filled
       ></v-text-field>
-      <v-btn class="mt-2 paleteal--text" color="var(--v-secondary)"
-        >Sign up</v-btn
-      >
+      <v-btn class="mt-2 paleteal--text" color="#00a499">Sign up</v-btn>
     </v-container>
   </v-container>
 </template>
 
 <style scoped>
 h1 {
-  color: var(--v-primary);
+  color: #3ca073;
 }
 </style>

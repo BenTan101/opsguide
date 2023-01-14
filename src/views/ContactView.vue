@@ -7,9 +7,7 @@
       <v-text-field label="Name" filled></v-text-field>
       <v-text-field label="Email" filled></v-text-field>
       <v-textarea label="Message" filled></v-textarea>
-      <v-btn class="mt-2 paleteal--text" color="var(--v-secondary)"
-        >Submit</v-btn
-      >
+      <v-btn class="mt-2 paleteal--text" color="#00a499">Submit</v-btn>
     </v-container>
   </v-container>
 </template>
@@ -24,6 +22,6 @@ export default {
 
 <style scoped>
 h1 {
-  color: var(--v-primary);
+  color: #3ca073;
 }
 </style>
