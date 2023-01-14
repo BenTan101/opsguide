@@ -7,26 +7,22 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     name: "home",
-    component: () =>
-      import("../views/HomeView.vue"),
+    component: () => import("../views/HomeView.vue"),
   },
   {
     path: "/search",
     name: "search",
-    component: () =>
-      import("../views/SearchView.vue"),
+    component: () => import("../views/SearchView.vue"),
   },
   {
     path: "/contact",
     name: "contact",
-    component: () =>
-      import("../views/ContactView.vue"),
+    component: () => import("../views/ContactView.vue"),
   },
   {
     path: "/login",
     name: "login",
-    component: () =>
-      import("../views/LoginView.vue"),
+    component: () => import("../views/LoginView.vue"),
   },
 ];
 
