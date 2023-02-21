@@ -2,6 +2,7 @@
   <v-app>
     <v-app-bar app elevate-on-scroll>
       <v-toolbar-title class="headline text-uppercase">
+        <v-btn icon to="/"><v-icon>mdi-school</v-icon></v-btn>
         <span class="font-weight-light hidden-sm-and-down"
           >The NUS High Opportunities Guide</span
         >

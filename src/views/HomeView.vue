@@ -1,6 +1,7 @@
 <template>
   <v-container class="pa-16">
     <h1>OpsGuide: Charting Your Course in NUS High</h1>
+    <h2 v-show="hasName" class="pb-8">Hello {{ $route.params.name }}!</h2>
     <h3 class="font-weight-light">
       Bored? Finding something to do with your life?<br /><br />Look no
       further!<br /><br />
@@ -54,6 +55,16 @@
     </v-container>
   </v-container>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      hasName: this.$route.params.name != null,
+    };
+  },
+};
+</script>
 
 <style scoped>
 h1 {
