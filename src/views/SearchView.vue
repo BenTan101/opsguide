@@ -13,7 +13,7 @@
     </v-card-title>
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="opportunities"
       :search="search"
       :items-per-page="5"
     ></v-data-table>
@@ -39,7 +39,7 @@ export default {
         { text: "Duration/Period", value: "duration" },
         { text: "Workload", value: "workload" },
       ],
-      desserts: [
+      opportunities: [
         {
           name: "Singapore Mathematical Olympiad (SMO) (Junior)",
           category: "Competition",

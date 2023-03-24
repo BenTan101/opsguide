@@ -3,7 +3,7 @@
     <h1>Contact Us</h1>
 
     <v-container class="py-8">
-      <v-select :items="items" label="Category" filled></v-select>
+      <v-select :items="categories" label="Category" filled></v-select>
       <v-text-field label="Name" filled></v-text-field>
       <v-text-field label="Email" filled></v-text-field>
       <v-textarea label="Message" filled></v-textarea>
@@ -15,7 +15,7 @@
 <script lang="ts">
 export default {
   data: () => ({
-    items: ["Query", "Suggestion", "Feedback", "Bug report", "Other"],
+    categories: ["Query", "Suggestion", "Feedback", "Bug report", "Other"],
   }),
 };
 </script>

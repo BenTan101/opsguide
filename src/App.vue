@@ -12,7 +12,9 @@
         <v-btn to="/" depressed>Home</v-btn>
         <v-btn to="/search" depressed>Search</v-btn>
         <v-btn to="/contact" depressed>Contact</v-btn>
-        <v-btn to="/login" depressed>Login</v-btn>
+        <v-btn to="/login" depressed>{{
+          store().state.isLoggedIn ? "Profile" : "Login"
+        }}</v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -30,11 +32,19 @@
 </template>
 
 <script lang="ts">
+import store from "@/store";
+
 export default {
   name: "App",
 
   data() {
     return {};
+  },
+
+  methods: {
+    store() {
+      return store;
+    },
   },
 };
 </script>
