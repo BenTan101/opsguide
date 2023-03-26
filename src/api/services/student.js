@@ -1,6 +1,8 @@
 const db = require("./db");
 
 async function login(email, passwordHash) {
+  console.log(passwordHash);
+
   return await db.query(
     `
         SELECT *
@@ -22,6 +24,16 @@ async function signup(email, name, passwordHash, graduationYear) {
       WHERE studentEmail = "${email}";
       `
   );
+}
+
+// email (primary key) is not allowed to be changed
+async function updateStudent(email, name, passwordHash, graduationYear) {
+  await db.query(`
+    UPDATE student
+    SET name = "${name}", passwordHash = "${passwordHash}", graduationYear = "${graduationYear}"
+    WHERE studentEmail = "${email}"
+  `);
+  return true;
 }
 
 // async function getEmails() {
@@ -47,6 +59,7 @@ module.exports = {
   getStudents,
   login,
   signup,
+  updateStudent,
   findStudent,
   findAdmin,
   // getEmails,

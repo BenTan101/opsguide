@@ -1,81 +1,77 @@
 <template>
   <v-container class="pa-16">
-    <h1>Login</h1>
+    <h1 class="pb-8">Login</h1>
 
-    <v-container class="py-8">
-      <v-text-field label="Email" filled v-model="email"></v-text-field>
-      <v-text-field
-        label="Password"
-        type="password"
-        filled
-        v-model="password"
-      ></v-text-field>
-      <v-btn class="mt-2 paleteal--text" color="#00a499" @click="login"
-        >Login
-      </v-btn>
-    </v-container>
-    <h3 class="font-weight-light mt-8"><i>New? Register here.</i></h3>
-
-    <v-container class="py-8">
-      <v-text-field
-        label="School email"
-        filled
-        v-model="signupEmail"
-        :error-messages="
-          this.signupEmail !== '' &&
-          (!this.signupEmail.match(/h[0-9]+@nushigh\.edu\.sg/gi) ||
-            this.signupEmail.length !== 23)
-            ? ['Please enter a valid nushigh.edu.sg email address.']
-            : []
-        "
-      ></v-text-field>
-      <v-text-field label="Full name" filled v-model="name"></v-text-field>
-      <v-text-field
-        label="Year of graduation"
-        filled
-        v-model="graduationYear"
-        :error-messages="
-          this.graduationYear !== '' &&
-          (!Number.isInteger(parseInt(this.graduationYear)) ||
-            this.graduationYear < new Date().getFullYear() ||
-            this.graduationYear > new Date().getFullYear() + 5)
-            ? [
-                `Year must be between ${new Date().getFullYear()} and ${
-                  new Date().getFullYear() + 5
-                }.`,
-              ]
-            : []
-        "
-      ></v-text-field>
-      <v-text-field
-        label="Password"
-        type="password"
-        filled
-        v-model="signupPassword"
-      ></v-text-field>
-      <v-text-field
-        label="Retype password"
-        type="password"
-        filled
-        v-model="signupPasswordRetyped"
-        :error-messages="
-          this.signupPassword !== this.signupPasswordRetyped
-            ? ['Passwords do not match.']
-            : []
-        "
-      ></v-text-field>
-      <v-btn class="mt-2 paleteal--text" color="#00a499" @click="signup"
-        >Sign up</v-btn
-      >
-    </v-container>
+    <v-text-field label="Email" filled v-model="email"></v-text-field>
+    <v-text-field
+      label="Password"
+      type="password"
+      filled
+      v-model="password"
+    ></v-text-field>
+    <v-btn class="mb-16 paleteal--text" color="#00a499" @click="login"
+      >Login
+    </v-btn>
+    <h3 class="font-weight-light mb-2"><i>New? Register here.</i></h3>
+    <v-text-field
+      label="School email"
+      filled
+      v-model="signupEmail"
+      :error-messages="
+        this.signupEmail !== '' && !functions.isEmailValid(this.signupEmail)
+          ? ['Please enter a valid nushigh.edu.sg email address.']
+          : []
+      "
+    ></v-text-field>
+    <v-text-field label="Full name" filled v-model="name"></v-text-field>
+    <v-text-field
+      label="Year of graduation"
+      filled
+      v-model="graduationYear"
+      :error-messages="
+        !functions.isGraduationYearValid(this.graduationYear)
+          ? [
+              `Year must be between ${new Date().getFullYear()} and ${
+                new Date().getFullYear() + 5
+              }.`,
+            ]
+          : []
+      "
+    ></v-text-field>
+    <v-text-field
+      label="Password"
+      type="password"
+      filled
+      v-model="signupPassword"
+    ></v-text-field>
+    <v-text-field
+      label="Retype password"
+      type="password"
+      filled
+      v-model="signupPasswordRetyped"
+      :error-messages="
+        this.signupPassword !== this.signupPasswordRetyped
+          ? ['Passwords do not match.']
+          : []
+      "
+    ></v-text-field>
+    <v-btn class="mt-2 paleteal--text" color="#00a499" @click="signup"
+      >Sign up
+    </v-btn>
   </v-container>
 </template>
 
 <script>
 import UserService from "@/services/UserService.js";
 import store from "@/store";
+import { functions } from "@/services/functions";
 
 export default {
+  computed: {
+    functions() {
+      return functions;
+    },
+  },
   data() {
     return {
       email: "",
@@ -88,32 +84,26 @@ export default {
     };
   },
   methods: {
-    getSHAa256Hash: async function (input) {
-      const textAsBuffer = new TextEncoder().encode(input);
-      const hashBuffer = await window.crypto.subtle.digest(
-        "SHA-256",
-        textAsBuffer
-      );
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray
-        .map((item) => item.toString(16).padStart(2, "0"))
-        .join("");
-    },
     login: async function () {
       this.error = null;
       try {
         const response = await UserService.login({
           email: this.email,
-          passwordHash: await this.getSHAa256Hash(this.password),
+          passwordHash: await functions.getSHA256Hash(this.password),
         });
 
         const name = response[0]["name"];
         const graduationYear = parseInt(response[0]["graduationYear"]);
 
         if (name !== "" && graduationYear !== 0) {
-          store.commit("login");
-          store.commit("setName", name);
-          store.commit("setGraduationYear", graduationYear);
+          store.commit("login", {
+            email: response[0]["studentEmail"],
+            name: name,
+            passwordHash: String.fromCharCode(
+              ...response[0]["passwordHash"]["data"]
+            ),
+            graduationYear: graduationYear,
+          });
 
           this.$toasted.show("Login successful.", {
             type: "success",
@@ -152,18 +142,11 @@ export default {
 
       // Validation before signing up
       if (
-        !this.signupEmail.match(/h[0-9]+@nushigh\.edu\.sg/gi) ||
-        this.signupEmail.length !== 23
+        !functions.isEmailValid(this.signupEmail) ||
+        !functions.isGraduationYearValid(this.graduationYear) ||
+        this.signupPassword !== this.signupPasswordRetyped
       )
         return;
-      if (
-        this.graduationYear !== "" &&
-        (!Number.isInteger(parseInt(this.graduationYear)) ||
-          this.graduationYear < new Date().getFullYear() ||
-          this.graduationYear > new Date().getFullYear() + 5)
-      )
-        return;
-      if (this.signupPassword !== this.signupPasswordRetyped) return;
 
       console.log(
         this.signupEmail,
@@ -193,20 +176,20 @@ export default {
         const signupResult = await UserService.signup({
           email: this.signupEmail,
           name: this.name,
-          passwordHash: await this.getSHAa256Hash(this.signupPassword),
+          passwordHash: await functions.getSHA256Hash(this.signupPassword),
           graduationYear: this.graduationYear,
         });
 
         console.log(signupResult);
         console.log(
           this.signupEmail,
-          await this.getSHAa256Hash(this.signupPassword)
+          await functions.getSHA256Hash(this.signupPassword)
         );
 
         // Login
         const response = await UserService.login({
           email: this.signupEmail,
-          passwordHash: await this.getSHAa256Hash(this.signupPassword),
+          passwordHash: await functions.getSHA256Hash(this.signupPassword),
         });
 
         console.log(response);
@@ -215,9 +198,14 @@ export default {
         this.graduationYear = parseInt(response[0]["graduationYear"]);
 
         if (this.name !== "" && this.graduationYear !== 0) {
-          store.commit("login");
-          store.commit("setName", this.name);
-          store.commit("setGraduationYear", this.graduationYear);
+          store.commit("login", {
+            email: response[0]["studentEmail"],
+            name: this.name,
+            passwordHash: String.fromCharCode(
+              ...response[0]["passwordHash"]["data"]
+            ),
+            graduationYear: this.graduationYear,
+          });
 
           this.$toasted.show("Account created successfully.", {
             type: "success",

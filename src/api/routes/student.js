@@ -31,12 +31,29 @@ router.post("/signup", async function (req, res, next) {
   }
 });
 
-router.get("/students", async function (req, res, next) {
+// router.get("/students", async function (req, res, next) {
+//   try {
+//     res.json(await opsguide.getStudents());
+//   } catch (err) {
+//     console.error(`Error getting students`, err.message);
+//     next(err);
+//   }
+// });
+
+router.post("/update-student", async function (req, res, next) {
   try {
-    res.json(await opsguide.getStudents());
+    return res.json(
+      await opsguide.updateStudent(
+        req.body["email"],
+        req.body["name"],
+        req.body["passwordHash"],
+        req.body["graduationYear"]
+      )
+    );
   } catch (err) {
     console.error(`Error getting students`, err.message);
     next(err);
+    return false;
   }
 });
 

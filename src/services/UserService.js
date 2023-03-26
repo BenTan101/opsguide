@@ -15,6 +15,12 @@ export default {
       body: JSON.stringify(credentials),
     });
   },
+  updateStudent(credentials) {
+    return api("/update-student", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
   isStudent(credentials) {
     console.log(credentials);
     let details = api("/is-student", {
