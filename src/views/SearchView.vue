@@ -1,28 +1,34 @@
 <template>
-  <v-card class="ma-16">
-    <v-card-title>
-      Opportunities
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-      :headers="headers"
-      :items="opportunities"
-      :search="search"
-      :items-per-page="5"
-    ></v-data-table>
-  </v-card>
+  <div>
+    <v-card v-if="store().state.isLoggedIn" class="ma-16">
+      <v-card-title>
+        Opportunities
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="opportunities"
+        :search="search"
+        :items-per-page="5"
+      ></v-data-table>
+    </v-card>
+    <h3 class="ma-16 font-weight-light" v-if="!store().state.isLoggedIn">
+      <a href="/login">Log in</a> to browse available opportunities.
+    </h3>
+  </div>
 </template>
 
 <script>
 import UserService from "@/services/UserService";
 import { functions } from "@/services/functions";
+import store from "@/store";
 
 export default {
   data() {
@@ -48,6 +54,9 @@ export default {
     };
   },
   methods: {
+    store() {
+      return store;
+    },
     async populateTable() {
       this.opportunities = functions.formatOpportunitiesForTable(
         await UserService.getAllOpportunities()
