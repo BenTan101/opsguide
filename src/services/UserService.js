@@ -1,6 +1,11 @@
 import { api } from "@/services/api.js";
 
 export default {
+  getAllOpportunities() {
+    return api("/get-all-opportunities", {
+      method: "GET",
+    });
+  },
   login(credentials) {
     console.log(JSON.stringify(credentials));
     return api("/login", {

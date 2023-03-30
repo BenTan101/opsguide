@@ -1,5 +1,16 @@
 const db = require("./db");
 
+async function getAllOpportunities() {
+  return await db.query(
+    `
+        SELECT opportunityName, category, scope, subject, year, duration, workload, tic
+        FROM opportunity o, year y, subject s, tic t
+        WHERE o.opportunityId = y.opportunityId AND o.opportunityId = s.opportunityId AND o.opportunityId = t.opportunityId
+        ORDER BY opportunityName;
+    `
+  );
+}
+
 async function login(email, passwordHash) {
   console.log(passwordHash);
 
@@ -56,6 +67,7 @@ async function findAdmin(email) {
 }
 
 module.exports = {
+  getAllOpportunities,
   getStudents,
   login,
   signup,

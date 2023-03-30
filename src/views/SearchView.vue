@@ -20,7 +20,10 @@
   </v-card>
 </template>
 
-<script lang="ts">
+<script>
+import UserService from "@/services/UserService";
+import { functions } from "@/services/functions";
+
 export default {
   data() {
     return {
@@ -33,13 +36,32 @@ export default {
           value: "name",
         },
         { text: "Category", value: "category" },
-        { text: "Subject", value: "subject" },
         { text: "Scope", value: "scope" },
+        { text: "Subject", value: "subject" },
         { text: "Year", value: "year" },
-        { text: "Duration/Period", value: "duration" },
+        { text: "Duration", value: "duration" },
         { text: "Workload", value: "workload" },
+        { text: "TIC", value: "tic" },
+        // Other attributes like opportunityId, background, recommendation, eligibility, timeline, timestamp, departmentId, adminEmail
       ],
-      opportunities: [
+      opportunities: [],
+    };
+  },
+  methods: {
+    async populateTable() {
+      this.opportunities = functions.formatOpportunitiesForTable(
+        await UserService.getAllOpportunities()
+      );
+      console.log(this.opportunities);
+    },
+  },
+  beforeMount() {
+    this.populateTable();
+  },
+};
+</script>
+
+<!--
         {
           name: "Singapore Mathematical Olympiad (SMO) (Junior)",
           category: "Competition",
@@ -135,8 +157,4 @@ export default {
           duration: "1 year",
           workload: "Moderate",
         },
-      ],
-    };
-  },
-};
-</script>
+-->

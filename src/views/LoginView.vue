@@ -121,6 +121,10 @@ export default {
       }
     },
     signup: async function () {
+      let rawOpps = await UserService.getAllOpportunities();
+      console.log(rawOpps);
+      functions.formatOpportunitiesForTable(rawOpps);
+
       // Check all field are non-empty
       if (
         this.signupEmail === "" ||

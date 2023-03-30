@@ -20,4 +20,72 @@ export const functions = {
       )
     );
   },
+  formatOpportunitiesForTable: function (raw) {
+    const formatted = [];
+    let subjects = [];
+    let years = [];
+    let tics = [];
+
+    for (let i = 0; i < raw.length; i++) {
+      let prev = i === 0 ? null : raw[i - 1];
+      let curr = raw[i];
+
+      if (prev !== null && curr.opportunityName !== prev.opportunityName) {
+        formatted.push({
+          name: prev.opportunityName,
+          category: prev.category,
+          scope: prev.scope,
+          duration: prev.duration,
+          workload: prev.workload,
+          subject: subjects,
+          year: years,
+          tic: tics,
+        });
+
+        subjects = [];
+        years = [];
+        tics = [];
+      }
+
+      if (
+        prev == null ||
+        curr.opportunityName === prev.opportunityName ||
+        (subjects.length === 0 && years.length === 0 && tics.length === 0)
+      ) {
+        if (!subjects.includes(curr.subject)) subjects.push(curr.subject);
+        if (!years.includes(curr.year)) years.push(curr.year);
+        if (!tics.includes(curr.tic)) tics.push(curr.tic);
+      } else {
+        formatted.push({
+          name: prev.opportunityName,
+          category: prev.category,
+          scope: prev.scope,
+          duration: prev.duration,
+          workload: prev.workload,
+          subject: subjects,
+          year: years,
+          tic: tics,
+        });
+
+        subjects = [];
+        years = [];
+        tics = [];
+      }
+
+      if (i === raw.length - 1) {
+        formatted.push({
+          name: prev.opportunityName,
+          category: prev.category,
+          scope: prev.scope,
+          duration: prev.duration,
+          workload: prev.workload,
+          subject: subjects,
+          year: years,
+          tic: tics,
+        });
+      }
+    }
+
+    return formatted;
+  },
 };

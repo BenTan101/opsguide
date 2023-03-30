@@ -1,6 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const opsguide = require("../services/student");
+
+router.get("/get-all-opportunities", async function (req, res, next) {
+  try {
+    return res.json(await opsguide.getAllOpportunities());
+  } catch (err) {
+    console.error(`Error getting all opportunities`, err.message);
+    next(err);
+  }
+});
+
 router.post("/login", async function (req, res, next) {
   try {
     let details = await opsguide.login(
