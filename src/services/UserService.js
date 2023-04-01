@@ -6,6 +6,33 @@ export default {
       method: "GET",
     });
   },
+  getMyOpportunities(credentials) {
+    console.log("credence");
+    console.log(JSON.stringify(credentials));
+    return api("/get-my-opportunities", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  getBookmarkedOpportunities(credentials) {
+    console.log(JSON.stringify(credentials));
+    return api("/get-bookmarked-opportunities", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  getOpportunity(credentials) {
+    return api("/get-opportunity", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  getDepartment(credentials) {
+    return api("/get-department", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
   login(credentials) {
     console.log(JSON.stringify(credentials));
     return api("/login", {

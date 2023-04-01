@@ -11,6 +11,50 @@ router.get("/get-all-opportunities", async function (req, res, next) {
   }
 });
 
+router.post("/get-my-opportunities", async function (req, res, next) {
+  try {
+    let details = await opsguide.getMyOpportunities(req.body["email"]);
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error getting my opportunities`, err.message);
+    next(err);
+  }
+});
+
+router.post("/get-bookmarked-opportunities", async function (req, res, next) {
+  try {
+    let details = await opsguide.getBookmarkedOpportunities(req.body["email"]);
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error getting bookmarked opportunities`, err.message);
+    next(err);
+  }
+});
+
+router.post("/get-opportunity", async function (req, res, next) {
+  try {
+    let details = await opsguide.getOpportunity(req.body["opportunityId"]);
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error getting opportunity`, err.message);
+    next(err);
+  }
+});
+
+router.post("/get-department", async function (req, res, next) {
+  try {
+    let details = await opsguide.getDepartment(req.body["departmentId"]);
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error getting department`, err.message);
+    next(err);
+  }
+});
+
 router.post("/login", async function (req, res, next) {
   try {
     let details = await opsguide.login(

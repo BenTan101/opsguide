@@ -21,6 +21,8 @@ export const functions = {
     );
   },
   formatOpportunitiesForTable: function (raw) {
+    console.log(raw);
+    console.log("rawww");
     const formatted = [];
     let subjects = [];
     let years = [];
@@ -30,8 +32,9 @@ export const functions = {
       let prev = i === 0 ? null : raw[i - 1];
       let curr = raw[i];
 
-      if (prev !== null && curr.opportunityName !== prev.opportunityName) {
+      if (prev !== null && curr.id !== prev.id) {
         formatted.push({
+          id: prev.id,
           name: prev.opportunityName,
           category: prev.category,
           scope: prev.scope,
@@ -49,7 +52,7 @@ export const functions = {
 
       if (
         prev == null ||
-        curr.opportunityName === prev.opportunityName ||
+        curr.id === prev.id ||
         (subjects.length === 0 && years.length === 0 && tics.length === 0)
       ) {
         if (!subjects.includes(curr.subject)) subjects.push(curr.subject);
@@ -57,6 +60,7 @@ export const functions = {
         if (!tics.includes(curr.tic)) tics.push(curr.tic);
       } else {
         formatted.push({
+          id: prev.id,
           name: prev.opportunityName,
           category: prev.category,
           scope: prev.scope,
@@ -74,6 +78,7 @@ export const functions = {
 
       if (i === raw.length - 1) {
         formatted.push({
+          id: prev.id,
           name: prev.opportunityName,
           category: prev.category,
           scope: prev.scope,

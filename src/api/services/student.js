@@ -3,10 +3,52 @@ const db = require("./db");
 async function getAllOpportunities() {
   return await db.query(
     `
-        SELECT opportunityName, category, scope, subject, year, duration, workload, tic
-        FROM opportunity o, year y, subject s, tic t
+        SELECT o.opportunityId id, opportunityName, category, scope, subject, year, duration, workload, tic
+        FROM Opportunity o, Year y, Subject s, TIC t
         WHERE o.opportunityId = y.opportunityId AND o.opportunityId = s.opportunityId AND o.opportunityId = t.opportunityId
         ORDER BY opportunityName;
+    `
+  );
+}
+
+async function getMyOpportunities(email) {
+  return await db.query(
+    `
+        SELECT o.opportunityId id, opportunityName, category, scope, subject, year, duration, workload, tic
+        FROM Opportunity o, TakeOpportunity t, Year y, Subject s, TIC
+        WHERE o.opportunityId = y.opportunityId AND o.opportunityId = s.opportunityId AND o.opportunityId = tic.opportunityId AND o.opportunityId = t.opportunityId AND studentEmail = "${email}"
+        ORDER BY opportunityName;
+    `
+  );
+}
+
+async function getBookmarkedOpportunities(email) {
+  return await db.query(
+    `
+        SELECT o.opportunityId id, opportunityName, category, scope, subject, year, duration, workload, tic
+        FROM Opportunity o, BookmarkOpportunity b, Year y, Subject s, TIC
+        WHERE o.opportunityId = y.opportunityId AND o.opportunityId = s.opportunityId AND o.opportunityId = tic.opportunityId AND o.opportunityId = b.opportunityId AND studentEmail = "${email}"
+        ORDER BY opportunityName;
+    `
+  );
+}
+
+async function getOpportunity(id) {
+  return await db.query(
+    `
+        SELECT *
+        FROM Opportunity o, Year y, Subject s, TIC t
+        WHERE o.opportunityId = "${id}" AND o.opportunityId = y.opportunityId AND o.opportunityId = s.opportunityId AND o.opportunityId = t.opportunityId
+    `
+  );
+}
+
+async function getDepartment(id) {
+  return await db.query(
+    `
+    SELECT *
+    FROM Department d
+    WHERE d.departmentId = "${id}";
     `
   );
 }
@@ -68,6 +110,10 @@ async function findAdmin(email) {
 
 module.exports = {
   getAllOpportunities,
+  getMyOpportunities,
+  getBookmarkedOpportunities,
+  getOpportunity,
+  getDepartment,
   getStudents,
   login,
   signup,

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <v-card v-if="store().state.isLoggedIn" class="ma-16">
+    <v-card class="ma-16">
+      <!--    <v-card v-if="store().state.isLoggedIn" class="ma-16">-->
       <v-card-title>
         Opportunities
         <v-spacer></v-spacer>
@@ -19,6 +20,90 @@
         :items-per-page="5"
       ></v-data-table>
     </v-card>
+
+    <v-container class="lighten-5 pt-8 px-16">
+      <v-row dense>
+        <v-col>
+          <h1>Opportunities</h1>
+        </v-col>
+      </v-row>
+      <v-row dense>
+        <v-col md="3">
+          <v-card
+            class="rounded-lg pa-4 md4"
+            color="#333f48"
+            outlined
+            tile
+            elevation="4"
+          >
+            <h2>My opportunities</h2>
+          </v-card>
+        </v-col>
+        <v-col md="3">
+          <v-card
+            class="rounded-lg pa-4 md4"
+            color="#333f48"
+            outlined
+            tile
+            elevation="4"
+          >
+            <h2>My bookmarks</h2>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row class="mt-8" dense>
+        <v-col>
+          <h1>Modules</h1>
+        </v-col>
+      </v-row>
+      <v-row dense>
+        <v-col md="3">
+          <v-card
+            class="rounded-lg pa-4 md4"
+            color="#333f48"
+            outlined
+            tile
+            elevation="4"
+          >
+            <h2>My majors</h2>
+          </v-card>
+        </v-col>
+        <v-col md="3">
+          <v-card
+            class="rounded-lg pa-4 md4"
+            color="#333f48"
+            outlined
+            tile
+            elevation="4"
+          >
+            <h2>My honours</h2>
+          </v-card>
+        </v-col>
+        <v-col md="3">
+          <v-card
+            class="rounded-lg pa-4 md4"
+            color="#333f48"
+            outlined
+            tile
+            elevation="4"
+          >
+            <h2>My electives</h2>
+          </v-card>
+        </v-col>
+        <v-col md="3">
+          <v-card
+            class="rounded-lg pa-4 md4"
+            color="#333f48"
+            outlined
+            tile
+            elevation="4"
+          >
+            <h2>My bookmarks</h2>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+
     <h3 class="ma-16 font-weight-light" v-if="!store().state.isLoggedIn">
       <a href="/login">Log in</a> to browse available opportunities.
     </h3>
@@ -69,6 +154,17 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+h1 {
+  color: #3ca073;
+}
+
+h2 {
+  color: #e5ecea;
+  font-weight: 400;
+}
+</style>
 
 <!--
         {
