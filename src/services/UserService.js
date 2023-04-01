@@ -27,6 +27,12 @@ export default {
       body: JSON.stringify(credentials),
     });
   },
+  getApprovedReviews(credentials) {
+    return api("/get-approved-reviews", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
   getDepartment(credentials) {
     return api("/get-department", {
       method: "POST",

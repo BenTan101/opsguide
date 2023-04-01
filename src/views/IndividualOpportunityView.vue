@@ -23,7 +23,7 @@
     >
     <p class="mt-2">
       <i
-        >For more information, contact {{ adminEmail }}.<br />Updated as of
+        >For more information, contact {{ adminName }}.<br />Updated as of
         {{ timestamp }}.</i
       >
     </p>
@@ -47,7 +47,31 @@
     <p>{{ recommendation }}</p>
     <h2 v-if="timeline !== null">Timeline</h2>
     <p>{{ timeline }}</p>
-    <h2>Reviews</h2>
+    <h2>Reviews ({{ reviews.length }})</h2>
+    <span class="ma-4" v-for="r in reviews" :key="r.index">
+      <v-card class="pa-8 rounded-lg" outlined tile elevation="2">
+        <div class="mb-4">
+          {{
+            new Intl.DateTimeFormat("en-GB", {
+              dateStyle: "long",
+            }).format(new Date(r["timestamp"]))
+          }}
+        </div>
+        <v-rating
+          class="mb-2"
+          :value="r['rating']"
+          color="primary"
+          background-color="primary"
+          dense
+          half-increments
+          readonly
+          size="28"
+        ></v-rating>
+        <h3>{{ r["title"] }}</h3>
+
+        <div>{{ r["body"] }}</div>
+      </v-card>
+    </span>
   </div>
 </template>
 
@@ -59,6 +83,7 @@ export default {
   data() {
     return {
       adminEmail: null, // Byline | adminEmail FK
+      adminName: null,
       background: null, // Main body
       category: null, // Chips?
       department: null, // Byline | departmentId fk
@@ -73,6 +98,7 @@ export default {
       subjects: [], // Chips?
       years: [], // Byline
       tics: [], // Byline
+      reviews: [],
     };
   },
   methods: {
@@ -121,6 +147,20 @@ export default {
         raw[0]["timeline"],
         raw[0]["workload"],
       ];
+
+      // Load admin name
+      this.adminName = (
+        await UserService.isAdmin({
+          email: this.adminEmail,
+        })
+      )[0]["name"];
+
+      // Load reviews
+      console.log("Reviews");
+      this.reviews = await UserService.getApprovedReviews({
+        opportunityId: this.id,
+      });
+      console.log(this.reviews);
     },
   },
   beforeMount() {

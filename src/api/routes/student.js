@@ -44,6 +44,17 @@ router.post("/get-opportunity", async function (req, res, next) {
   }
 });
 
+router.post("/get-approved-reviews", async function (req, res, next) {
+  try {
+    let details = await opsguide.getApprovedReviews(req.body["opportunityId"]);
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error getting approved reviews`, err.message);
+    next(err);
+  }
+});
+
 router.post("/get-department", async function (req, res, next) {
   try {
     let details = await opsguide.getDepartment(req.body["departmentId"]);
@@ -122,7 +133,7 @@ router.post("/is-student", async function (req, res, next) {
 
 router.post("/is-admin", async function (req, res, next) {
   try {
-    let details = res.json(await opsguide.findAdmin(req.body["email"]));
+    let details = await opsguide.findAdmin(req.body["email"]);
     res.json(details);
     return details;
   } catch (err) {

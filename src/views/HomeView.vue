@@ -21,7 +21,7 @@
     <v-container class="lighten-5 pt-8 px-16">
       <v-row>
         <v-col>
-          <v-card class="pa-8" outlined tile elevation="4">
+          <v-card class="pa-8 rounded-lg" outlined tile elevation="2">
             <h2>Comprehensive</h2>
             <p>
               Find opportunities spanning the sciences, the arts, and beyond.
@@ -29,7 +29,7 @@
           </v-card>
         </v-col>
         <v-col>
-          <v-card class="pa-8" outlined tile elevation="4">
+          <v-card class="pa-8 rounded-lg" outlined tile elevation="2">
             <h2>Reliable</h2>
             <p>Browse testimonials from seniors for a balanced perspective.</p>
           </v-card>
@@ -37,7 +37,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-card class="pa-8" outlined tile elevation="4">
+          <v-card class="pa-8 rounded-lg" outlined tile elevation="2">
             <h2>Organised</h2>
             <p>
               Search for opportunities by category with this one-stop portal.
@@ -45,7 +45,7 @@
           </v-card>
         </v-col>
         <v-col>
-          <v-card class="pa-8" outlined tile elevation="4">
+          <v-card class="pa-8 rounded-lg" outlined tile elevation="2">
             <h2>Updated</h2>
             <p>Stay tuned to the latest changes in opportunities.</p>
           </v-card>

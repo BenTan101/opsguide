@@ -43,6 +43,17 @@ async function getOpportunity(id) {
   );
 }
 
+async function getApprovedReviews(id) {
+  return await db.query(
+    `
+    SELECT r.timestamp timestamp, rating, title, body
+    FROM Review r, Opportunity o
+    WHERE o.opportunityId = "${id}" AND r.opportunityId = o.opportunityId AND isApproved
+    ORDER BY r.timestamp, rating DESC;
+    `
+  );
+}
+
 async function getDepartment(id) {
   return await db.query(
     `
@@ -113,6 +124,7 @@ module.exports = {
   getMyOpportunities,
   getBookmarkedOpportunities,
   getOpportunity,
+  getApprovedReviews,
   getDepartment,
   getStudents,
   login,
