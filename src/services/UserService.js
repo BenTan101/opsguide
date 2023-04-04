@@ -7,7 +7,6 @@ export default {
     });
   },
   getMyOpportunities(credentials) {
-    console.log("credence");
     console.log(JSON.stringify(credentials));
     return api("/get-my-opportunities", {
       method: "POST",
@@ -23,6 +22,27 @@ export default {
   },
   getOpportunity(credentials) {
     return api("/get-opportunity", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  getAllModules(credentials) {
+    console.log(JSON.stringify(credentials));
+    return api("/get-all-modules", {
+      method: "GET",
+      body: JSON.stringify(credentials),
+    });
+  },
+  getMyModules(credentials) {
+    console.log(JSON.stringify(credentials));
+    return api("/get-my-modules", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  getBookmarkedModules(credentials) {
+    console.log(JSON.stringify(credentials));
+    return api("/get-bookmarked-modules", {
       method: "POST",
       body: JSON.stringify(credentials),
     });

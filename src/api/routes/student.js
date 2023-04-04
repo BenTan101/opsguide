@@ -44,6 +44,33 @@ router.post("/get-opportunity", async function (req, res, next) {
   }
 });
 
+router.get("/get-all-modules", async function (req, res, next) {
+  try {
+    return res.json(await opsguide.getAllModules());
+  } catch (err) {
+    console.error(`Error getting all modules`, err.message);
+    next(err);
+  }
+});
+
+router.post("/get-my-modules", async function (req, res, next) {
+  try {
+    return res.json(await opsguide.getMyModules(req.body["email"]));
+  } catch (err) {
+    console.error(`Error getting my modules`, err.message);
+    next(err);
+  }
+});
+
+router.post("/get-bookmarked-modules", async function (req, res, next) {
+  try {
+    return res.json(await opsguide.getBookmarkedModules(req.body["email"]));
+  } catch (err) {
+    console.error(`Error getting bookmarked modules`, err.message);
+    next(err);
+  }
+});
+
 router.post("/get-approved-reviews", async function (req, res, next) {
   try {
     let details = await opsguide.getApprovedReviews(req.body["opportunityId"]);

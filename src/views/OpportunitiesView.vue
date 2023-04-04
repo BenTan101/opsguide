@@ -71,13 +71,13 @@ export default {
     return {
       opportunityId: -1,
       seeOpportunity: false,
-      isMyOpportunities: "All",
+      opportunitiesTab: "All",
       search: "",
       headers: [
         {
           text: "Opportunity",
           align: "start",
-          sortable: false,
+          sortable: true,
           value: "name",
         },
         { text: "Category", value: "category" },
@@ -97,12 +97,12 @@ export default {
       return store;
     },
     getTabStyle(type) {
-      return this.isMyOpportunities === type
+      return this.opportunitiesTab === type
         ? "d-inline px-3 py-2 primary white--text"
         : "d-inline px-3 py-2 paleteal black--text";
     },
     changeTab(type) {
-      this.isMyOpportunities = type;
+      this.opportunitiesTab = type;
       console.log("Yes");
       this.populateTable(type);
       console.log("dssdf");

@@ -43,6 +43,39 @@ async function getOpportunity(id) {
   );
 }
 
+async function getAllModules() {
+  return await db.query(
+    `
+        SELECT moduleCode code, moduleName name, departmentName department
+        FROM Module m, Department d
+        WHERE m.departmentId = d.departmentId
+        ORDER BY moduleCode;
+    `
+  );
+}
+
+async function getMyModules(email) {
+  return await db.query(
+    `
+        SELECT m.moduleCode code, moduleName name, departmentName department, type
+        FROM Module m, Department d, TakeModule t
+        WHERE m.departmentId = d.departmentId AND m.moduleCode = t.moduleCode AND t.studentEmail = "${email}"
+        ORDER BY m.moduleCode;
+    `
+  );
+}
+
+async function getBookmarkedModules(email) {
+  return await db.query(
+    `
+        SELECT m.moduleCode code, moduleName name, departmentName department
+        FROM Module m, Department d, BookmarkModule b
+        WHERE m.departmentId = d.departmentId AND m.moduleCode = b.moduleCode AND b.studentEmail = "${email}"
+        ORDER BY m.moduleCode;
+    `
+  );
+}
+
 async function getApprovedReviews(id) {
   return await db.query(
     `
@@ -160,6 +193,9 @@ module.exports = {
   getMyOpportunities,
   getBookmarkedOpportunities,
   getOpportunity,
+  getAllModules,
+  getMyModules,
+  getBookmarkedModules,
   getApprovedReviews,
   getApprovedReviewByStudent,
   createReview,
