@@ -33,6 +33,31 @@ export default {
       body: JSON.stringify(credentials),
     });
   },
+  getApprovedReviewByStudent(credentials) {
+    return api("/get-approved-review-by-student", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  // Create, update, delete Review
+  createReview(credentials) {
+    return api("/create-review", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  updateReview(credentials) {
+    return api("/update-review", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  deleteReview(credentials) {
+    return api("/delete-review", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
   getDepartment(credentials) {
     return api("/get-department", {
       method: "POST",

@@ -4,11 +4,13 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 const state = {
-  isLoggedIn: false,
-  email: "",
-  name: "",
-  passwordHash: "",
-  graduationYear: 0,
+  // TODO: Remove perma login
+  isLoggedIn: true,
+  email: "h1810017@nushigh.edu.sg",
+  name: "Henry",
+  passwordHash:
+    "a950f30a7250cdaa104c6e74406bc6b7634b278ce6f62b53cfeba0d2e36d58dc",
+  graduationYear: 2023,
 };
 
 export default new Vuex.Store({

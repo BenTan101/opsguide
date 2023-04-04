@@ -54,6 +54,42 @@ async function getApprovedReviews(id) {
   );
 }
 
+async function getApprovedReviewByStudent(id, email) {
+  return await db.query(
+    `
+    SELECT r.timestamp timestamp, rating, title, body
+    FROM Review r, Opportunity o
+    WHERE o.opportunityId = "${id}" AND r.opportunityId = o.opportunityId AND isApproved AND r.email = "${email}"
+    `
+  );
+}
+
+// isApproved = true for debugging purposes
+async function createReview(rating, title, body, email, opportunityId) {
+  await db.query(`
+    INSERT INTO Review VALUES
+    (CURDATE(), "${rating}", "${title}", "${body}", true, "${email}", "${opportunityId}");
+  `);
+  return true;
+}
+
+async function updateReview(rating, title, body, email, opportunityId) {
+  await db.query(`
+    UPDATE Review
+    SET rating = "${rating}", title = "${title}", body = "${body}"
+    WHERE email = "${email}" AND opportunityId = "${opportunityId}"
+  `);
+  return true;
+}
+
+async function deleteReview(email, opportunityId) {
+  await db.query(`
+    DELETE FROM Review
+    WHERE email = "${email}" AND opportunityId = "${opportunityId}"
+  `);
+  return true;
+}
+
 async function getDepartment(id) {
   return await db.query(
     `
@@ -78,7 +114,7 @@ async function login(email, passwordHash) {
 
 async function signup(email, name, passwordHash, graduationYear) {
   await db.query(`
-    INSERT INTO student VALUES ("${email}", "${name}", "${passwordHash}", "${graduationYear}")
+    INSERT INTO Student VALUES ("${email}", "${name}", "${passwordHash}", "${graduationYear}")
   `);
 
   return await db.query(
@@ -93,7 +129,7 @@ async function signup(email, name, passwordHash, graduationYear) {
 // email (primary key) is not allowed to be changed
 async function updateStudent(email, name, passwordHash, graduationYear) {
   await db.query(`
-    UPDATE student
+    UPDATE Student
     SET name = "${name}", passwordHash = "${passwordHash}", graduationYear = "${graduationYear}"
     WHERE studentEmail = "${email}"
   `);
@@ -111,12 +147,12 @@ async function getStudents() {
 }
 async function findStudent(email) {
   return await db.query(
-    `SELECT * FROM student WHERE studentEmail = "${email}"`
+    `SELECT * FROM Student WHERE studentEmail = "${email}"`
   );
 }
 
 async function findAdmin(email) {
-  return await db.query(`SELECT * FROM admin WHERE adminEmail = "${email}"`);
+  return await db.query(`SELECT * FROM Admin WHERE adminEmail = "${email}"`);
 }
 
 module.exports = {
@@ -125,6 +161,10 @@ module.exports = {
   getBookmarkedOpportunities,
   getOpportunity,
   getApprovedReviews,
+  getApprovedReviewByStudent,
+  createReview,
+  updateReview,
+  deleteReview,
   getDepartment,
   getStudents,
   login,

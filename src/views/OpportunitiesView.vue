@@ -5,7 +5,7 @@
       v-if="seeOpportunity"
       elevation="2"
       color="#333f48"
-      @click="unseeOpportunity()"
+      @click="unseeOpportunity"
       icon
     >
       <v-icon> mdi-arrow-left </v-icon>

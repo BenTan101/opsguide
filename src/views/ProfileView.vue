@@ -85,6 +85,7 @@ export default {
     logout() {
       store.commit("logout");
       this.$toasted.show("Logged out.", {
+        type: "success",
         theme: "bubble",
         position: "top-center",
       });

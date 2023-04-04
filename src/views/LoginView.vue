@@ -84,7 +84,7 @@ export default {
     };
   },
   methods: {
-    login: async function () {
+    async login() {
       this.error = null;
       try {
         const response = await UserService.login({
@@ -120,7 +120,7 @@ export default {
         });
       }
     },
-    signup: async function () {
+    async signup() {
       let rawOpps = await UserService.getAllOpportunities();
       console.log(rawOpps);
       functions.formatOpportunitiesForTable(rawOpps);

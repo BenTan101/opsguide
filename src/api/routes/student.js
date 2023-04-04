@@ -55,6 +55,68 @@ router.post("/get-approved-reviews", async function (req, res, next) {
   }
 });
 
+router.post("/get-approved-review-by-student", async function (req, res, next) {
+  try {
+    let details = await opsguide.getApprovedReviewByStudent(
+      req.body["opportunityId"],
+      req.body["email"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error getting approved review by student`, err.message);
+    next(err);
+  }
+});
+
+router.post("/create-review", async function (req, res, next) {
+  try {
+    let details = await opsguide.createReview(
+      req.body["rating"],
+      req.body["title"],
+      req.body["body"],
+      req.body["email"],
+      req.body["opportunityId"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error creating review`, err.message);
+    next(err);
+  }
+});
+
+router.post("/update-review", async function (req, res, next) {
+  try {
+    let details = await opsguide.updateReview(
+      req.body["rating"],
+      req.body["title"],
+      req.body["body"],
+      req.body["email"],
+      req.body["opportunityId"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error updating review`, err.message);
+    next(err);
+  }
+});
+
+router.post("/delete-review", async function (req, res, next) {
+  try {
+    let details = await opsguide.deleteReview(
+      req.body["email"],
+      req.body["opportunityId"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error deleting review`, err.message);
+    next(err);
+  }
+});
+
 router.post("/get-department", async function (req, res, next) {
   try {
     let details = await opsguide.getDepartment(req.body["departmentId"]);

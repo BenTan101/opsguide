@@ -21,11 +21,9 @@
     <v-chip class="mx-1 my-1" color="paleteal" v-for="t in tics" :key="t"
       ><v-icon left>mdi-account</v-icon>{{ t }}</v-chip
     >
-    <p class="mt-2">
-      <i
-        >For more information, contact {{ adminName }}.<br />Updated as of
-        {{ timestamp }}.</i
-      >
+    <p class="light mt-2">
+      For more information, contact {{ adminName }}.<br />Updated as of
+      {{ timestamp }}.
     </p>
     <h2 class="pt-8" v-if="background !== null">Background</h2>
     <p>{{ background }}</p>
@@ -72,16 +70,81 @@
         <div>{{ r["body"] }}</div>
       </v-card>
     </span>
+    <h3 class="light mt-8 mb-2">
+      {{
+        reviewByStudent !== null ? "Update my review..." : "Write a review..."
+      }}
+    </h3>
+    <v-card class="pa-8 rounded-lg" outlined tile elevation="2">
+      <div class="mb-4">
+        {{
+          new Intl.DateTimeFormat("en-GB", {
+            dateStyle: "long",
+          }).format(
+            reviewByStudent !== null
+              ? new Date(reviewByStudent["timestamp"])
+              : new Date()
+          )
+        }}
+      </div>
+      <v-rating
+        v-model="rating"
+        class="mb-2"
+        color="primary"
+        background-color="primary"
+        dense
+        half-increments
+        size="28"
+      ></v-rating>
+      <h2>
+        <v-text-field v-model="title" label="Title" filled></v-text-field>
+      </h2>
+      <v-textarea v-model="body" label="Body" filled></v-textarea>
+      <v-btn class="paleteal--text" color="secondary" @click="resetReview"
+        >Reset
+      </v-btn>
+      <v-btn class="paleteal--text ml-2" color="primary" @click="submitReview"
+        >{{ reviewByStudent !== null ? "Update" : "Submit" }}
+      </v-btn>
+
+      <v-dialog v-model="dialog" width="300px">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            v-on="on"
+            class="paleteal--text ml-2"
+            color="#b71c1c"
+            >Delete
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title>
+            <span>Are you sure?</span>
+          </v-card-title>
+          <v-card-text>Deleting your review is irreversible.</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="dialog = false">Cancel</v-btn>
+            <v-btn color="error" text @click="deleteReview">Delete</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-card>
   </div>
 </template>
 
 <script>
 import UserService from "@/services/UserService";
+import store from "@/store";
 
 export default {
   props: ["id"],
   data() {
     return {
+      dialog: false,
+      rating: 1,
+      title: "",
+      body: "",
       adminEmail: null, // Byline | adminEmail FK
       adminName: null,
       background: null, // Main body
@@ -99,6 +162,7 @@ export default {
       years: [], // Byline
       tics: [], // Byline
       reviews: [],
+      reviewByStudent: null,
     };
   },
   methods: {
@@ -161,10 +225,108 @@ export default {
         opportunityId: this.id,
       });
       console.log(this.reviews);
+
+      // Load student's review
+      this.reviewByStudent = await UserService.getApprovedReviewByStudent({
+        opportunityId: this.id,
+        email: store.state.email,
+      });
+      this.reviewByStudent =
+        this.reviewByStudent.length !== 0 ? this.reviewByStudent[0] : null;
+
+      this.rating =
+        this.reviewByStudent !== null ? this.reviewByStudent["rating"] : 1;
+      this.title =
+        this.reviewByStudent !== null ? this.reviewByStudent["title"] : "";
+      this.body =
+        this.reviewByStudent !== null ? this.reviewByStudent["body"] : "";
+    },
+    isReviewValid() {
+      return (
+        Number.isFinite(this.rating) &&
+        this.rating >= 1 &&
+        this.title !== "" &&
+        this.body !== ""
+      );
+    },
+    clearFields() {
+      this.rating = 1;
+      this.title = "";
+      this.body = "";
+    },
+    resetReview() {
+      this.rating =
+        this.reviewByStudent !== null ? this.reviewByStudent["rating"] : 1;
+      this.title =
+        this.reviewByStudent !== null ? this.reviewByStudent["title"] : "";
+      this.body =
+        this.reviewByStudent !== null ? this.reviewByStudent["body"] : "";
+    },
+    async submitReview() {
+      if (this.isReviewValid()) {
+        console.log("Here");
+        if (this.reviewByStudent !== null) {
+          await UserService.updateReview({
+            rating: this.rating,
+            title: this.title,
+            body: this.body,
+            email: store.state.email,
+            opportunityId: this.id,
+          });
+        } else {
+          await UserService.createReview({
+            rating: this.rating,
+            title: this.title,
+            body: this.body,
+            email: store.state.email,
+            opportunityId: this.id,
+          });
+        }
+        console.log("awaited");
+        await this.loadOpportunity();
+
+        this.$toasted.show(
+          this.reviewByStudent !== null
+            ? "Your review has been updated! It will be published after being approved."
+            : "Your review has been submitted! It will be published after being approved.",
+          {
+            type: "success",
+            theme: "bubble",
+            position: "top-center",
+          }
+        );
+      } else {
+        this.$toasted.show(
+          "Please check that a rating of 1-5 is given and that the title and body are both filled up.",
+          {
+            type: "error",
+            theme: "bubble",
+            position: "top-center",
+          }
+        );
+      }
+    },
+    async deleteReview() {
+      this.dialog = false;
+
+      await UserService.deleteReview({
+        email: store.state.email,
+        opportunityId: this.id,
+      });
+
+      await this.loadOpportunity();
+
+      this.$toasted.show("Review deleted.", {
+        type: "success",
+        theme: "bubble",
+        position: "top-center",
+      });
+      this.reviewByStudent = null;
     },
   },
+
   beforeMount() {
-    console.log("Before moutning");
+    console.log("Before mounting");
     this.loadOpportunity();
   },
 };
@@ -178,5 +340,9 @@ h1 {
 h2 {
   color: #00a499;
   font-weight: 500;
+}
+
+.light {
+  font-weight: 300;
 }
 </style>
