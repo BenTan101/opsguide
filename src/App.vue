@@ -12,7 +12,6 @@
         <v-btn to="/" depressed>Home</v-btn>
         <v-btn to="/opportunities" depressed>Opportunities</v-btn>
         <v-btn to="/modules" depressed>Modules</v-btn>
-        <v-btn to="/search" depressed>Search</v-btn>
         <v-btn to="/contact" depressed>Contact</v-btn>
         <v-btn to="/login" depressed>{{
           store().state.isLoggedIn ? "Profile" : "Login"
