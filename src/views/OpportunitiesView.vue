@@ -74,12 +74,7 @@ export default {
       opportunitiesTab: "All",
       search: "",
       headers: [
-        {
-          text: "Opportunity",
-          align: "start",
-          sortable: true,
-          value: "name",
-        },
+        { text: "Opportunity", value: "name" },
         { text: "Category", value: "category" },
         { text: "Scope", value: "scope" },
         { text: "Subject", value: "subject" },

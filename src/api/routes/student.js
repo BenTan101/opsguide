@@ -144,6 +144,97 @@ router.post("/delete-review", async function (req, res, next) {
   }
 });
 
+// Check if module TAKEN
+router.post("/is-module-taken", async function (req, res, next) {
+  try {
+    let details = await opsguide.checkTakeModule(
+      req.body["email"],
+      req.body["code"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error checking module taken status`, err.message);
+    next(err);
+  }
+});
+
+// Check if module BOOKMARKED
+router.post("/is-module-bookmarked", async function (req, res, next) {
+  try {
+    let details = await opsguide.checkBookmarkModule(
+      req.body["email"],
+      req.body["code"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error checking module bookmarked status`, err.message);
+    next(err);
+  }
+});
+
+// TAKE module
+router.post("/take-module", async function (req, res, next) {
+  try {
+    let details = await opsguide.takeModule(
+      req.body["email"],
+      req.body["code"],
+      req.body["type"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error taking module`, err.message);
+    next(err);
+  }
+});
+
+// BOOKMARK module
+router.post("/bookmark-module", async function (req, res, next) {
+  try {
+    let details = await opsguide.bookmarkModule(
+      req.body["email"],
+      req.body["code"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error bookmarking module`, err.message);
+    next(err);
+  }
+});
+
+// DELETE TAKE module (updating involves deleting all before re-adding all coz simpler lol)
+router.post("/delete-take-module", async function (req, res, next) {
+  try {
+    let details = await opsguide.deleteTakeModule(
+      req.body["email"],
+      req.body["code"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error deleting take module`, err.message);
+    next(err);
+  }
+});
+
+// DELETE BOOKMARK module
+router.post("/delete-bookmark-module", async function (req, res, next) {
+  try {
+    let details = await opsguide.deleteBookmarkModule(
+      req.body["email"],
+      req.body["code"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error deleting bookmark module`, err.message);
+    next(err);
+  }
+});
+
 router.post("/get-department", async function (req, res, next) {
   try {
     let details = await opsguide.getDepartment(req.body["departmentId"]);

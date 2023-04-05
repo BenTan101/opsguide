@@ -123,6 +123,58 @@ async function deleteReview(email, opportunityId) {
   return true;
 }
 
+async function checkTakeModule(email, code) {
+  return await db.query(`
+    SELECT *
+    FROM TakeModule
+    WHERE studentEmail = "${email}" AND moduleCode = "${code}"
+  `);
+}
+
+async function checkBookmarkModule(email, code) {
+  return await db.query(`
+    SELECT *
+    FROM BookmarkModule
+    WHERE studentEmail = "${email}" AND moduleCode = "${code}"
+  `);
+}
+
+async function takeModule(email, code, type) {
+  await db.query(`
+      INSERT INTO TakeModule
+      VALUES ("${email}", "${code}", "${type}")
+  `);
+
+  return true;
+}
+
+async function bookmarkModule(email, code) {
+  await db.query(`
+      INSERT INTO BookmarkModule
+      VALUES ("${email}", "${code}")
+  `);
+
+  return true;
+}
+
+async function deleteTakeModule(email, code) {
+  await db.query(`
+      DELETE FROM TakeModule
+      WHERE studentEmail = "${email}" AND moduleCode = "${code}";
+  `);
+
+  return true;
+}
+
+async function deleteBookmarkModule(email, code) {
+  await db.query(`
+      DELETE FROM BookmarkModule
+      WHERE studentEmail = "${email}" AND moduleCode = "${code}";
+  `);
+
+  return true;
+}
+
 async function getDepartment(id) {
   return await db.query(
     `
@@ -201,6 +253,12 @@ module.exports = {
   createReview,
   updateReview,
   deleteReview,
+  checkTakeModule,
+  checkBookmarkModule,
+  takeModule,
+  bookmarkModule,
+  deleteTakeModule,
+  deleteBookmarkModule,
   getDepartment,
   getStudents,
   login,

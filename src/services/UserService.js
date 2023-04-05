@@ -78,6 +78,42 @@ export default {
       body: JSON.stringify(credentials),
     });
   },
+  checkTakeModule(credentials) {
+    return api("/is-module-taken", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  checkBookmarkModule(credentials) {
+    return api("/is-module-bookmarked", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  takeModule(credentials) {
+    return api("/take-module", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  bookmarkModule(credentials) {
+    return api("/bookmark-module", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  deleteTakeModule(credentials) {
+    return api("/delete-take-module", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  deleteBookmarkModule(credentials) {
+    return api("/delete-bookmark-module", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
   getDepartment(credentials) {
     return api("/get-department", {
       method: "POST",
