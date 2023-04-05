@@ -18,7 +18,7 @@
           : []
       "
     ></v-text-field>
-    <h3 class="font-weight-light mt-8 mb-2"><i>Change password</i></h3>
+    <h3 class="font-weight-light mt-8 mb-2">Change password</h3>
     <v-text-field
       label="Current password"
       type="password"

@@ -12,7 +12,7 @@
     <v-btn class="mb-16 paleteal--text" color="#00a499" @click="login"
       >Login
     </v-btn>
-    <h3 class="font-weight-light mb-2"><i>New? Register here.</i></h3>
+    <h3 class="font-weight-light mb-2">New? Register here.</h3>
     <v-text-field
       label="School email"
       filled
