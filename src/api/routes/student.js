@@ -44,6 +44,87 @@ router.post("/get-opportunity", async function (req, res, next) {
   }
 });
 
+router.post("/is-opportunity-taken", async function (req, res, next) {
+  try {
+    let details = await opsguide.checkTakeOpportunity(
+      req.body["email"],
+      req.body["opportunityId"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error checking opportunity taken status`, err.message);
+    next(err);
+  }
+});
+router.post("/is-opportunity-bookmarked", async function (req, res, next) {
+  try {
+    let details = await opsguide.checkBookmarkOpportunity(
+      req.body["email"],
+      req.body["opportunityId"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error checking opportunity bookmarked status`, err.message);
+    next(err);
+  }
+});
+router.post("/take-opportunity", async function (req, res, next) {
+  try {
+    let details = await opsguide.takeOpportunity(
+      req.body["email"],
+      req.body["opportunityId"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error taking opportunity`, err.message);
+    next(err);
+  }
+});
+
+router.post("/bookmark-opportunity", async function (req, res, next) {
+  try {
+    let details = await opsguide.bookmarkOpportunity(
+      req.body["email"],
+      req.body["opportunityId"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error bookmarking opportunity`, err.message);
+    next(err);
+  }
+});
+
+router.post("/delete-take-opportunity", async function (req, res, next) {
+  try {
+    let details = await opsguide.deleteTakeOpportunity(
+      req.body["email"],
+      req.body["opportunityId"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error deleting take opportunity`, err.message);
+    next(err);
+  }
+});
+
+router.post("/delete-bookmark-opportunity", async function (req, res, next) {
+  try {
+    let details = await opsguide.deleteBookmarkOpportunity(
+      req.body["email"],
+      req.body["opportunityId"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error deleting bookmark opportunity`, err.message);
+    next(err);
+  }
+});
 router.get("/get-all-modules", async function (req, res, next) {
   try {
     return res.json(await opsguide.getAllModules());

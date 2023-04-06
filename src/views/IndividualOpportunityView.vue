@@ -138,7 +138,7 @@ import UserService from "@/services/UserService";
 import store from "@/store";
 
 export default {
-  props: ["id"],
+  props: ["id", "isTaking", "isBookmarked"],
   data() {
     return {
       dialog: false,
@@ -166,6 +166,12 @@ export default {
     };
   },
   methods: {
+    setIsTaking(value) {
+      this.$emit("emitSetIsTaking", value);
+    },
+    setIsBookmarked(value) {
+      this.$emit("emitSetIsBookmarked", value);
+    },
     async loadOpportunity() {
       let raw = await UserService.getOpportunity({ opportunityId: this.id });
       console.log("raw");
@@ -240,6 +246,24 @@ export default {
         this.reviewByStudent !== null ? this.reviewByStudent["title"] : "";
       this.body =
         this.reviewByStudent !== null ? this.reviewByStudent["body"] : "";
+
+      let credentials = {
+        email: store.state.email,
+        opportunityId: this.id,
+      };
+      this.setIsTaking(
+        (await UserService.checkTakeOpportunity(credentials)).length !== 0
+      );
+      this.setIsBookmarked(
+        (await UserService.checkBookmarkOpportunity(credentials)).length !== 0
+      );
+      console.log("TBTBTB");
+      console.log(credentials);
+      console.log((await UserService.checkTakeOpportunity(credentials)).length);
+      console.log(
+        (await UserService.checkBookmarkOpportunity(credentials)).length
+      );
+      console.log(this.isTaking, this.isBookmarked);
     },
     isReviewValid() {
       return (

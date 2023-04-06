@@ -42,6 +42,56 @@ async function getOpportunity(id) {
     `
   );
 }
+async function checkTakeOpportunity(email, id) {
+  return await db.query(`
+    SELECT *
+    FROM TakeOpportunity
+    WHERE studentEmail = "${email}" AND opportunityId = "${id}";
+  `);
+}
+
+async function checkBookmarkOpportunity(email, id) {
+  return await db.query(`
+    SELECT *
+    FROM BookmarkOpportunity
+    WHERE studentEmail = "${email}" AND opportunityId = "${id}";
+  `);
+}
+async function takeOpportunity(email, id) {
+  return await db.query(
+    `
+        INSERT INTO TakeOpportunity
+        VALUES ("${email}", "${id}")
+    `
+  );
+}
+
+async function bookmarkOpportunity(email, id) {
+  return await db.query(
+    `
+        INSERT INTO BookmarkOpportunity
+        VALUES ("${email}", "${id}")
+    `
+  );
+}
+
+async function deleteTakeOpportunity(email, id) {
+  return await db.query(
+    `
+        DELETE FROM TakeOpportunity
+        WHERE studentEmail = "${email}" AND opportunityId = "${id}"
+    `
+  );
+}
+
+async function deleteBookmarkOpportunity(email, id) {
+  return await db.query(
+    `
+        DELETE FROM BookmarkOpportunity
+        WHERE studentEmail = "${email}" AND opportunityId = "${id}"
+    `
+  );
+}
 
 async function getAllModules() {
   return await db.query(
@@ -245,6 +295,12 @@ module.exports = {
   getMyOpportunities,
   getBookmarkedOpportunities,
   getOpportunity,
+  checkTakeOpportunity,
+  checkBookmarkOpportunity,
+  takeOpportunity,
+  bookmarkOpportunity,
+  deleteTakeOpportunity,
+  deleteBookmarkOpportunity,
   getAllModules,
   getMyModules,
   getBookmarkedModules,

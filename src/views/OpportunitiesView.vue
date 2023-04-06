@@ -10,6 +10,28 @@
     >
       <v-icon> mdi-arrow-left </v-icon>
     </v-btn>
+    <v-btn
+      class="ml-4 mb-4"
+      v-if="seeOpportunity"
+      elevation="2"
+      color="#333f48"
+      @click="toggleTakeOpportunity"
+      icon
+    >
+      <v-icon> {{ isTaking ? "mdi-minus" : "mdi-plus" }} </v-icon>
+    </v-btn>
+    <v-btn
+      class="ml-4 mb-4"
+      v-if="seeOpportunity"
+      elevation="2"
+      color="#333f48"
+      @click="toggleBookmarkOpportunity"
+      icon
+    >
+      <v-icon>
+        {{ isBookmarked ? "mdi-bookmark" : "mdi-bookmark-outline" }}
+      </v-icon>
+    </v-btn>
     <div v-if="!seeOpportunity">
       <!--    <div v-if="store().state.isLoggedIn">-->
       <div id="flexbox">
@@ -51,7 +73,14 @@
       </v-card>
     </div>
 
-    <IndividualOpportunityView v-if="seeOpportunity" :id="opportunityId" />
+    <IndividualOpportunityView
+      v-if="seeOpportunity"
+      :id="opportunityId"
+      :isTaking="isTaking"
+      :isBookmarked="isBookmarked"
+      @emitSetIsTaking="(value) => (isTaking = value)"
+      @emitSetIsBookmarked="(value) => (isBookmarked = value)"
+    />
 
     <h3 class="mt-16" v-if="!store().state.isLoggedIn">
       <a href="/login">Log in</a> to browse available opportunities.
@@ -69,6 +98,8 @@ export default {
   components: { IndividualOpportunityView },
   data() {
     return {
+      isTaking: false,
+      isBookmarked: false,
       opportunityId: -1,
       seeOpportunity: false,
       opportunitiesTab: "All",
@@ -96,10 +127,10 @@ export default {
         ? "d-inline px-3 py-2 primary white--text"
         : "d-inline px-3 py-2 paleteal black--text";
     },
-    changeTab(type) {
+    async changeTab(type) {
       this.opportunitiesTab = type;
       console.log("Yes");
-      this.populateTable(type);
+      await this.populateTable(type);
       console.log("dssdf");
     },
     async populateTable(type) {
@@ -137,6 +168,64 @@ export default {
     },
     unseeOpportunity() {
       this.seeOpportunity = false;
+    },
+    async toggleTakeOpportunity() {
+      console.log("Toggle take");
+      let credentials = {
+        email: store.state.email,
+        opportunityId: this.opportunityId,
+      };
+
+      console.log(credentials);
+      console.log(await UserService.checkTakeOpportunity(credentials));
+      console.log(this.isTaking);
+
+      if (!this.isTaking) {
+        await UserService.takeOpportunity(credentials);
+
+        this.$toasted.show("Opportunity taken successfully.", {
+          type: "success",
+          theme: "bubble",
+          position: "top-center",
+        });
+      } else {
+        await UserService.deleteTakeOpportunity(credentials);
+
+        this.$toasted.show("Opportunity dropped successfully.", {
+          type: "success",
+          theme: "bubble",
+          position: "top-center",
+        });
+      }
+
+      this.isTaking = !this.isTaking;
+    },
+    async toggleBookmarkOpportunity() {
+      console.log("Toggle bookmark");
+      let credentials = {
+        email: store.state.email,
+        opportunityId: this.opportunityId,
+      };
+
+      if (!this.isBookmarked) {
+        await UserService.bookmarkOpportunity(credentials);
+
+        this.$toasted.show("Opportunity bookmarked successfully.", {
+          type: "success",
+          theme: "bubble",
+          position: "top-center",
+        });
+      } else {
+        await UserService.deleteBookmarkOpportunity(credentials);
+
+        this.$toasted.show("Opportunity removed from bookmarks successfully.", {
+          type: "success",
+          theme: "bubble",
+          position: "top-center",
+        });
+      }
+
+      this.isBookmarked = !this.isBookmarked;
     },
   },
   beforeMount() {

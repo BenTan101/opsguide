@@ -32,6 +32,10 @@ export const functions = {
       let prev = i === 0 ? null : raw[i - 1];
       let curr = raw[i];
 
+      console.log(i, "-----------");
+      console.log(curr);
+      console.log(prev);
+
       if (prev !== null && curr.id !== prev.id) {
         formatted.push({
           id: prev.id,
@@ -77,6 +81,7 @@ export const functions = {
       }
 
       if (i === raw.length - 1) {
+        if (prev === null) prev = curr;
         formatted.push({
           id: prev.id,
           name: prev.opportunityName,

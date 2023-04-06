@@ -26,6 +26,42 @@ export default {
       body: JSON.stringify(credentials),
     });
   },
+  checkTakeOpportunity(credentials) {
+    return api("/is-opportunity-taken", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  checkBookmarkOpportunity(credentials) {
+    return api("/is-opportunity-bookmarked", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  takeOpportunity(credentials) {
+    return api("/take-opportunity", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  bookmarkOpportunity(credentials) {
+    return api("/bookmark-opportunity", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  deleteTakeOpportunity(credentials) {
+    return api("/delete-take-opportunity", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  deleteBookmarkOpportunity(credentials) {
+    return api("/delete-bookmark-opportunity", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
   getAllModules(credentials) {
     console.log(JSON.stringify(credentials));
     return api("/get-all-modules", {
