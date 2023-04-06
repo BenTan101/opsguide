@@ -137,6 +137,17 @@ async function getApprovedReviews(id) {
   );
 }
 
+async function getAllApprovedReviewsByStudent(email) {
+  return await db.query(
+    `
+    SELECT opportunityName, r.timestamp timestamp, rating, title, body
+    FROM Review r, Opportunity o
+    WHERE r.opportunityId = o.opportunityId AND isApproved AND r.email = "${email}"
+    ORDER BY timestamp DESC
+    `
+  );
+}
+
 async function getApprovedReviewByStudent(id, email) {
   return await db.query(
     `
@@ -305,6 +316,7 @@ module.exports = {
   getMyModules,
   getBookmarkedModules,
   getApprovedReviews,
+  getAllApprovedReviewsByStudent,
   getApprovedReviewByStudent,
   createReview,
   updateReview,

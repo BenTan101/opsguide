@@ -163,6 +163,25 @@ router.post("/get-approved-reviews", async function (req, res, next) {
   }
 });
 
+router.post(
+  "/get-all-approved-reviews-by-student",
+  async function (req, res, next) {
+    try {
+      let details = await opsguide.getAllApprovedReviewsByStudent(
+        req.body["email"]
+      );
+      res.json(details);
+      return details;
+    } catch (err) {
+      console.error(
+        `Error getting all approved reviews by student`,
+        err.message
+      );
+      next(err);
+    }
+  }
+);
+
 router.post("/get-approved-review-by-student", async function (req, res, next) {
   try {
     let details = await opsguide.getApprovedReviewByStudent(

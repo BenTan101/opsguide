@@ -89,6 +89,12 @@ export default {
       body: JSON.stringify(credentials),
     });
   },
+  getAllApprovedReviewsByStudent(credentials) {
+    return api("/get-all-approved-reviews-by-student", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
   getApprovedReviewByStudent(credentials) {
     return api("/get-approved-review-by-student", {
       method: "POST",

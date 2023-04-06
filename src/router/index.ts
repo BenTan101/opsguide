@@ -16,8 +16,13 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: "/modules",
-    name: "module",
+    name: "modules",
     component: () => import("../views/ModulesView.vue"),
+  },
+  {
+    path: "/reviews",
+    name: "reviews",
+    component: () => import("../views/ReviewsView.vue"),
   },
   {
     path: "/contact",
