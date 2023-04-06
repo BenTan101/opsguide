@@ -18,7 +18,9 @@
       @click="toggleTakeOpportunity"
       icon
     >
-      <v-icon> {{ isTaking ? "mdi-minus" : "mdi-plus" }} </v-icon>
+      <v-icon :color="isTaking ? 'error' : 'primary'">
+        {{ isTaking ? "mdi-minus" : "mdi-plus" }}
+      </v-icon>
     </v-btn>
     <v-btn
       class="ml-4 mb-4"
@@ -28,7 +30,7 @@
       @click="toggleBookmarkOpportunity"
       icon
     >
-      <v-icon>
+      <v-icon color="primary">
         {{ isBookmarked ? "mdi-bookmark" : "mdi-bookmark-outline" }}
       </v-icon>
     </v-btn>
