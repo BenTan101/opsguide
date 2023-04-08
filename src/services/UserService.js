@@ -169,6 +169,13 @@ export default {
       body: JSON.stringify(credentials),
     });
   },
+  adminLogin(credentials) {
+    console.log(JSON.stringify(credentials));
+    return api("/admin-login", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
   signup(credentials) {
     console.log(JSON.stringify(credentials));
     return api("/signup", {

@@ -1,6 +1,6 @@
 <template>
   <div class="pa-16">
-    <h1 class="pb-4">Reviews</h1>
+    <h1 class="pb-4">My Reviews</h1>
     <span class="ma-4" v-for="r in reviews" :key="r.index">
       <h2 class="mt-4 mb-2">{{ r["opportunityName"] }}</h2>
       <v-card class="pa-8 rounded-lg" outlined tile elevation="2">

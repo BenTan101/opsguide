@@ -11,6 +11,7 @@ const state = {
   passwordHash:
     "a950f30a7250cdaa104c6e74406bc6b7634b278ce6f62b53cfeba0d2e36d58dc",
   graduationYear: 2023,
+  isAdmin: false,
 };
 
 export default new Vuex.Store({
@@ -29,6 +30,16 @@ export default new Vuex.Store({
       state.name = details["name"];
       state.passwordHash = details["passwordHash"];
       state.graduationYear = details["graduationYear"];
+      state.isAdmin = false;
+    },
+    adminLogin(state, details) {
+      console.log("VOILADMIN");
+      console.log(details);
+      state.isLoggedIn = true;
+      state.email = details["email"];
+      state.name = details["name"];
+      state.passwordHash = details["passwordHash"];
+      state.isAdmin = true;
     },
     logout() {
       state.isLoggedIn = false;
@@ -36,6 +47,7 @@ export default new Vuex.Store({
       state.name = "";
       state.passwordHash = "";
       state.graduationYear = 0;
+      state.isAdmin = false;
     },
     setEmail(state, email) {
       state.email = email;

@@ -7,8 +7,13 @@
       label="Password"
       type="password"
       filled
+      hide-details
       v-model="password"
     ></v-text-field>
+    <v-radio-group v-model="account" row>
+      <v-radio label="Student" value="Student"></v-radio>
+      <v-radio label="Admin" value="Admin"></v-radio>
+    </v-radio-group>
     <v-btn class="mb-16 paleteal--text" color="#00a499" @click="login"
       >Login
     </v-btn>
@@ -81,35 +86,64 @@ export default {
       signupPassword: "",
       signupPasswordRetyped: "",
       graduationYear: "",
+      account: "Student",
     };
   },
   methods: {
     async login() {
-      this.error = null;
       try {
-        const response = await UserService.login({
-          email: this.email,
-          passwordHash: await functions.getSHA256Hash(this.password),
-        });
-
-        const name = response[0]["name"];
-        const graduationYear = parseInt(response[0]["graduationYear"]);
-
-        if (name !== "" && graduationYear !== 0) {
-          store.commit("login", {
-            email: response[0]["studentEmail"],
-            name: name,
-            passwordHash: String.fromCharCode(
-              ...response[0]["passwordHash"]["data"]
-            ),
-            graduationYear: graduationYear,
+        if (this.account === "Student") {
+          const response = await UserService.login({
+            email: this.email,
+            passwordHash: await functions.getSHA256Hash(this.password),
           });
 
-          this.$toasted.show("Login successful.", {
-            type: "success",
-            theme: "bubble",
-            position: "top-center",
+          const name = response[0]["name"];
+          const graduationYear = parseInt(response[0]["graduationYear"]);
+
+          if (name !== "" && graduationYear !== 0) {
+            store.commit("login", {
+              email: response[0]["studentEmail"],
+              name: name,
+              passwordHash: String.fromCharCode(
+                ...response[0]["passwordHash"]["data"]
+              ),
+              graduationYear: graduationYear,
+            });
+
+            this.$toasted.show("Login successful.", {
+              type: "success",
+              theme: "bubble",
+              position: "top-center",
+            });
+          }
+        } else if (this.account === "Admin") {
+          const response = await UserService.adminLogin({
+            email: this.email,
+            passwordHash: await functions.getSHA256Hash(this.password),
           });
+
+          console.log("Je uiss admin");
+
+          const name = response[0]["name"];
+
+          if (name !== "") {
+            console.log("Je SUISSS admin");
+
+            store.commit("adminLogin", {
+              email: response[0]["adminEmail"],
+              name: name,
+              passwordHash: String.fromCharCode(
+                ...response[0]["passwordHash"]["data"]
+              ),
+            });
+
+            this.$toasted.show("Login successful.", {
+              type: "success",
+              theme: "bubble",
+              position: "top-center",
+            });
+          }
         }
       } catch (error) {
         this.error = error.toString();

@@ -252,8 +252,18 @@ async function login(email, passwordHash) {
   return await db.query(
     `
         SELECT *
-        FROM student
+        FROM Student
         WHERE studentEmail = "${email}" AND passwordHash = "${passwordHash}";
+        `
+  );
+}
+
+async function adminLogin(email, passwordHash) {
+  return await db.query(
+    `
+        SELECT *
+        FROM Admin
+        WHERE adminEmail = "${email}" AND passwordHash = "${passwordHash}";
         `
   );
 }
@@ -330,6 +340,7 @@ module.exports = {
   getDepartment,
   getStudents,
   login,
+  adminLogin,
   signup,
   updateStudent,
   findStudent,

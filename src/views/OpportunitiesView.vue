@@ -170,6 +170,7 @@ export default {
     },
     unseeOpportunity() {
       this.seeOpportunity = false;
+      this.populateTable(this.opportunitiesTab);
     },
     async toggleTakeOpportunity() {
       console.log("Toggle take");

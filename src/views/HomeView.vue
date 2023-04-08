@@ -14,7 +14,7 @@
       color="#333f48"
       elevation="5"
       rounded
-      to="/search"
+      to="/opportunities"
       >Let's go.</v-btn
     >
 

@@ -360,6 +360,20 @@ router.post("/login", async function (req, res, next) {
   }
 });
 
+router.post("/admin-login", async function (req, res, next) {
+  try {
+    let details = await opsguide.adminLogin(
+      req.body["email"],
+      req.body["passwordHash"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error logging in as admin`, err.message);
+    next(err);
+  }
+});
+
 router.post("/signup", async function (req, res, next) {
   try {
     let details = await opsguide.signup(
