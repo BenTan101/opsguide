@@ -8,6 +8,7 @@
       label="Year of graduation"
       filled
       v-model="graduationYear"
+      v-if="!store().state.isAdmin"
       :error-messages="
         !functions.isGraduationYearValid(graduationYear)
           ? [
@@ -92,6 +93,7 @@ export default {
     },
     async update() {
       if (
+        !store.state.isAdmin &&
         ((this.oldPassword !== "" &&
           (await functions.getSHA256Hash(this.oldPassword)) ===
             this.passwordHash) ||
@@ -120,6 +122,44 @@ export default {
               ? await functions.getSHA256Hash(this.newPassword)
               : this.passwordHash,
           graduationYear: this.graduationYear,
+        });
+
+        this.passwordHash = store.state.passwordHash;
+        this.oldPassword = "";
+        this.newPassword = "";
+        this.newPasswordRetyped = "";
+
+        this.$toasted.show("Details updated successfully.", {
+          type: "success",
+          theme: "bubble",
+          position: "top-center",
+        });
+      } else if (
+        store.state.isAdmin &&
+        ((this.oldPassword !== "" &&
+          (await functions.getSHA256Hash(this.oldPassword)) ===
+            this.passwordHash) ||
+          (this.oldPassword === "" && this.newPassword === "")) &&
+        this.name !== ""
+      ) {
+        await UserService.updateAdmin({
+          email: this.email,
+          name: this.name,
+          passwordHash:
+            this.newPassword === this.newPasswordRetyped &&
+            this.newPassword !== ""
+              ? await functions.getSHA256Hash(this.newPassword)
+              : this.passwordHash,
+        });
+
+        store.commit("adminLogin", {
+          email: this.email,
+          name: this.name,
+          passwordHash:
+            this.newPassword === this.newPasswordRetyped &&
+            this.newPassword !== ""
+              ? await functions.getSHA256Hash(this.newPassword)
+              : this.passwordHash,
         });
 
         this.passwordHash = store.state.passwordHash;

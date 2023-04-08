@@ -183,6 +183,12 @@ export default {
       body: JSON.stringify(credentials),
     });
   },
+  updateAdmin(credentials) {
+    return api("/update-admin", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
   updateStudent(credentials) {
     return api("/update-student", {
       method: "POST",

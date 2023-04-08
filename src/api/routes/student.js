@@ -399,6 +399,21 @@ router.post("/signup", async function (req, res, next) {
 //   }
 // });
 
+router.post("/update-admin", async function (req, res, next) {
+  try {
+    return res.json(
+      await opsguide.updateAdmin(
+        req.body["email"],
+        req.body["name"],
+        req.body["passwordHash"]
+      )
+    );
+  } catch (err) {
+    console.error(`Error updating admin`, err.message);
+    next(err);
+    return false;
+  }
+});
 router.post("/update-student", async function (req, res, next) {
   try {
     return res.json(
@@ -410,7 +425,7 @@ router.post("/update-student", async function (req, res, next) {
       )
     );
   } catch (err) {
-    console.error(`Error getting students`, err.message);
+    console.error(`Error updating student`, err.message);
     next(err);
     return false;
   }

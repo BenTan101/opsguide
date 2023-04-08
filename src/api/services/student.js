@@ -283,6 +283,16 @@ async function signup(email, name, passwordHash, graduationYear) {
 }
 
 // email (primary key) is not allowed to be changed
+async function updateAdmin(email, name, passwordHash) {
+  await db.query(`
+    UPDATE Admin
+    SET name = "${name}", passwordHash = "${passwordHash}"
+    WHERE adminEmail = "${email}"
+  `);
+  return true;
+}
+
+// email (primary key) is not allowed to be changed
 async function updateStudent(email, name, passwordHash, graduationYear) {
   await db.query(`
     UPDATE Student
@@ -342,6 +352,7 @@ module.exports = {
   login,
   adminLogin,
   signup,
+  updateAdmin,
   updateStudent,
   findStudent,
   findAdmin,
