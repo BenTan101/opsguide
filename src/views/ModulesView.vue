@@ -41,6 +41,7 @@
           :search="search"
           :items-per-page="5"
           @click:row="!store().state.isAdmin ? rowClick : ''"
+          :loading="isLoading"
         >
         </v-data-table>
         <v-dialog v-model="dialog" width="500px">
@@ -90,6 +91,7 @@ import UserService from "@/services/UserService";
 export default {
   data() {
     return {
+      isLoading: true,
       take: null,
       bookmark: null,
       initialTake: null,
@@ -135,6 +137,7 @@ export default {
       ];
     },
     async populateTable(type) {
+      this.isLoading = true;
       this.modules = [];
       switch (type) {
         case "All":
@@ -151,6 +154,7 @@ export default {
           });
           break;
       }
+      this.isLoading = false;
     },
     async rowClick(module) {
       this.dialog = true;

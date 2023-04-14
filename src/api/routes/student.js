@@ -182,17 +182,27 @@ router.post(
   }
 );
 
-router.post("/get-approved-review-by-student", async function (req, res, next) {
+router.post("/get-review-by-student", async function (req, res, next) {
   try {
-    let details = await opsguide.getApprovedReviewByStudent(
+    let details = await opsguide.getReviewByStudent(
       req.body["opportunityId"],
       req.body["email"]
     );
     res.json(details);
     return details;
   } catch (err) {
-    console.error(`Error getting approved review by student`, err.message);
+    console.error(`Error getting review by student`, err.message);
     next(err);
+  }
+});
+
+router.get("/get-unapproved-reviews", async function (req, res, next) {
+  try {
+    let details = await opsguide.getUnapprovedReviews();
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error getting unapproved reviews`, err.message);
   }
 });
 
@@ -240,6 +250,20 @@ router.post("/delete-review", async function (req, res, next) {
     return details;
   } catch (err) {
     console.error(`Error deleting review`, err.message);
+    next(err);
+  }
+});
+
+router.post("/approve-review", async function (req, res, next) {
+  try {
+    let details = await opsguide.approveReview(
+      req.body["email"],
+      req.body["opportunityId"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error approving review`, err.message);
     next(err);
   }
 });

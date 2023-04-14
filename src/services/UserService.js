@@ -95,10 +95,15 @@ export default {
       body: JSON.stringify(credentials),
     });
   },
-  getApprovedReviewByStudent(credentials) {
-    return api("/get-approved-review-by-student", {
+  getReviewByStudent(credentials) {
+    return api("/get-review-by-student", {
       method: "POST",
       body: JSON.stringify(credentials),
+    });
+  },
+  getUnapprovedReviews() {
+    return api("/get-unapproved-reviews", {
+      method: "GET",
     });
   },
   // Create, update, delete Review
@@ -116,6 +121,12 @@ export default {
   },
   deleteReview(credentials) {
     return api("/delete-review", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  approveReview(credentials) {
+    return api("/approve-review", {
       method: "POST",
       body: JSON.stringify(credentials),
     });

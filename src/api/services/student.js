@@ -1,6 +1,8 @@
 const db = require("./db");
 
 async function getAllOpportunities() {
+  // TODO: Refactor all the 0 cartesian products to those with joins
+  // ^^^ Bookmark + Take Opps | Bookmark + Take Modules
   return await db.query(
     // https://stackoverflow.com/questions/14540736/sql-avoid-cartesian-product
     `
@@ -21,9 +23,15 @@ async function getMyOpportunities(email) {
   return await db.query(
     `
         SELECT o.opportunityId id, opportunityName, category, scope, subject, year, duration, workload, tic
-        FROM Opportunity o, TakeOpportunity t, Year y, Subject s, TIC
-        WHERE o.opportunityId = y.opportunityId AND o.opportunityId = s.opportunityId AND o.opportunityId = tic.opportunityId AND o.opportunityId = t.opportunityId AND studentEmail = "${email}"
-        ORDER BY opportunityName;
+        FROM Opportunity o
+            LEFT JOIN Year y
+        ON o.opportunityId = y.opportunityId
+            LEFT JOIN Subject s
+            ON o.opportunityId = s.opportunityId
+            LEFT JOIN TIC t
+            ON o.opportunityId = t.opportunityId
+        WHERE o.opportunityId = ANY(SELECT opportunityId FROM TakeOpportunity WHERE studentEmail = "${email}")
+        ORDER BY opportunityName
     `
   );
 }
@@ -32,9 +40,15 @@ async function getBookmarkedOpportunities(email) {
   return await db.query(
     `
         SELECT o.opportunityId id, opportunityName, category, scope, subject, year, duration, workload, tic
-        FROM Opportunity o, BookmarkOpportunity b, Year y, Subject s, TIC
-        WHERE o.opportunityId = y.opportunityId AND o.opportunityId = s.opportunityId AND o.opportunityId = tic.opportunityId AND o.opportunityId = b.opportunityId AND studentEmail = "${email}"
-        ORDER BY opportunityName;
+        FROM Opportunity o
+            LEFT JOIN Year y
+        ON o.opportunityId = y.opportunityId
+            LEFT JOIN Subject s
+            ON o.opportunityId = s.opportunityId
+            LEFT JOIN TIC t
+            ON o.opportunityId = t.opportunityId
+        WHERE o.opportunityId = ANY(SELECT opportunityId FROM BookmarkOpportunity WHERE studentEmail = "${email}")
+        ORDER BY opportunityName
     `
   );
 }
@@ -43,8 +57,15 @@ async function getOpportunity(id) {
   return await db.query(
     `
         SELECT *
-        FROM Opportunity o, Year y, Subject s, TIC t
-        WHERE o.opportunityId = "${id}" AND o.opportunityId = y.opportunityId AND o.opportunityId = s.opportunityId AND o.opportunityId = t.opportunityId
+        FROM Opportunity o
+            LEFT JOIN Year y
+        ON o.opportunityId = y.opportunityId
+            LEFT JOIN Subject s
+            ON o.opportunityId = s.opportunityId
+            LEFT JOIN TIC t
+            ON o.opportunityId = t.opportunityId
+        WHERE o.opportunityId = "${id}"
+        ORDER BY opportunityName;
     `
   );
 }
@@ -154,21 +175,32 @@ async function getAllApprovedReviewsByStudent(email) {
   );
 }
 
-async function getApprovedReviewByStudent(id, email) {
+async function getReviewByStudent(id, email) {
   return await db.query(
     `
-    SELECT r.timestamp timestamp, rating, title, body
+    SELECT r.timestamp timestamp, rating, title, body, isApproved
     FROM Review r, Opportunity o
-    WHERE o.opportunityId = "${id}" AND r.opportunityId = o.opportunityId AND isApproved AND r.email = "${email}"
+    WHERE o.opportunityId = "${id}" AND r.opportunityId = o.opportunityId AND r.email = "${email}"
     `
   );
 }
 
-// isApproved = true for debugging purposes
+async function getUnapprovedReviews() {
+  return await db.query(
+    `
+    SELECT o.opportunityId id, opportunityName, r.timestamp timestamp, rating, title, body, email, name
+    FROM Review r, Opportunity o, Student s
+    WHERE r.opportunityId = o.opportunityId AND NOT isApproved AND r.email = s.studentEmail
+    ORDER BY opportunityName, timestamp;
+    `
+  );
+}
+
+// TODO: change isApproved = true for debugging purposes
 async function createReview(rating, title, body, email, opportunityId) {
   await db.query(`
     INSERT INTO Review VALUES
-    (CURDATE(), "${rating}", "${title}", "${body}", true, "${email}", "${opportunityId}");
+    (CURDATE(), "${rating}", "${title}", "${body}", FALSE, "${email}", "${opportunityId}");
   `);
   return true;
 }
@@ -176,7 +208,7 @@ async function createReview(rating, title, body, email, opportunityId) {
 async function updateReview(rating, title, body, email, opportunityId) {
   await db.query(`
     UPDATE Review
-    SET rating = "${rating}", title = "${title}", body = "${body}"
+    SET rating = "${rating}", title = "${title}", body = "${body}", isApproved = FALSE
     WHERE email = "${email}" AND opportunityId = "${opportunityId}"
   `);
   return true;
@@ -185,6 +217,15 @@ async function updateReview(rating, title, body, email, opportunityId) {
 async function deleteReview(email, opportunityId) {
   await db.query(`
     DELETE FROM Review
+    WHERE email = "${email}" AND opportunityId = "${opportunityId}"
+  `);
+  return true;
+}
+
+async function approveReview(email, opportunityId) {
+  await db.query(`
+    UPDATE Review
+    SET isApproved = TRUE
     WHERE email = "${email}" AND opportunityId = "${opportunityId}"
   `);
   return true;
@@ -406,10 +447,12 @@ module.exports = {
   getBookmarkedModules,
   getApprovedReviews,
   getAllApprovedReviewsByStudent,
-  getApprovedReviewByStudent,
+  getReviewByStudent,
+  getUnapprovedReviews,
   createReview,
   updateReview,
   deleteReview,
+  approveReview,
   checkTakeModule,
   checkBookmarkModule,
   takeModule,

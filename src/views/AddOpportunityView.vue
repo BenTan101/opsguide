@@ -250,14 +250,14 @@ export default {
         console.log(opportunityDetails);
 
         // Insert opportunity
-        await UserService.createOpportunity(
-          opportunityDetails
-        );
+        await UserService.createOpportunity(opportunityDetails);
 
-        console.log((await UserService.getOpportunityByName({name: this.name})));
-        let opportunityId = (await UserService.getOpportunityByName({name: this.name}))[0][
-          "opportunityId"
-        ];
+        console.log(
+          await UserService.getOpportunityByName({ name: this.name })
+        );
+        let opportunityId = (
+          await UserService.getOpportunityByName({ name: this.name })
+        )[0]["opportunityId"];
         console.log("The opportunityId: ", opportunityId);
 
         // Insert years
@@ -283,7 +283,6 @@ export default {
         }
 
         console.log("TICS: ", this.ticsChosen);
-        // Insert TICs TODO: Implement prevent repeat TICs
         if (this.ticsChosen.length !== 0) {
           let tic = null;
           for (const t of this.ticsChosen) {

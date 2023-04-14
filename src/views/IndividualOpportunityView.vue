@@ -1,26 +1,34 @@
 <template>
   <div class="mx-16 mb-16">
     <h1>{{ name }}</h1>
-    <v-chip class="mx-1 my-1" color="paleteal">
+    <v-chip v-if="category !== null" class="mx-1 my-1" color="paleteal">
       {{ category }}
     </v-chip>
-    <v-chip class="mx-1 my-1" color="paleteal">
+    <v-chip v-if="scope !== null" class="mx-1 my-1" color="paleteal">
       {{ scope }}
     </v-chip>
-    <v-chip class="mx-1 my-1" color="paleteal">
+    <v-chip v-if="workload !== null" class="mx-1 my-1" color="paleteal">
       {{ workload }} Workload
     </v-chip>
     <div></div>
-    <v-chip class="mx-1 my-1" color="paleteal">
+    <v-chip v-if="department !== 'NA'" class="mx-1 my-1" color="paleteal">
       <v-icon left>mdi-domain</v-icon>{{ department }}</v-chip
     >
-    <v-chip class="mx-1 my-1" color="paleteal" v-for="s in subjects" :key="s">{{
-      s
-    }}</v-chip>
-    <div></div>
-    <v-chip class="mx-1 my-1" color="paleteal" v-for="t in tics" :key="t"
-      ><v-icon left>mdi-account</v-icon>{{ t }}</v-chip
+    <span v-if="subjects[0] !== null">
+      <v-chip
+        class="mx-1 my-1"
+        color="paleteal"
+        v-for="s in subjects"
+        :key="s"
+        >{{ s }}</v-chip
+      ></span
     >
+    <div></div>
+    <span v-if="tics[0] !== null">
+      <v-chip class="mx-1 my-1" color="paleteal" v-for="t in tics" :key="t"
+        ><v-icon left>mdi-account</v-icon>{{ t }}</v-chip
+      >
+    </span>
     <p class="light mt-2">
       For more information, contact {{ adminName }}.<br />Updated as of
       {{ timestamp }}.
@@ -174,6 +182,7 @@ export default {
     },
     async loadOpportunity() {
       // TODO: Check exceptions for stuff that may be null
+      console.log(this.id);
       let raw = await UserService.getOpportunity({ opportunityId: this.id });
       console.log("raw");
       console.log(raw);
@@ -190,6 +199,9 @@ export default {
           departmentId: raw[0]["departmentId"],
         })
       )[0]["departmentName"];
+
+      console.log("the department");
+      console.log(this.subjects);
 
       this.timestamp = new Intl.DateTimeFormat("en-GB", {
         dateStyle: "long",
@@ -234,10 +246,11 @@ export default {
       console.log(this.reviews);
 
       // Load student's review
-      this.reviewByStudent = await UserService.getApprovedReviewByStudent({
+      this.reviewByStudent = await UserService.getReviewByStudent({
         opportunityId: this.id,
         email: store.state.email,
       });
+
       this.reviewByStudent =
         this.reviewByStudent.length !== 0 ? this.reviewByStudent[0] : null;
 
@@ -288,6 +301,22 @@ export default {
         this.reviewByStudent !== null ? this.reviewByStudent["body"] : "";
     },
     async submitReview() {
+      console.log(this.reviewByStudent);
+      if (
+        this.reviewByStudent !== null &&
+        !this.reviewByStudent["isApproved"]
+      ) {
+        this.$toasted.show(
+          "You have previously submitted a review that is pending approval.",
+          {
+            type: "error",
+            theme: "bubble",
+            position: "top-center",
+          }
+        );
+        this.resetReview();
+        return;
+      }
       if (this.isReviewValid()) {
         console.log("Here");
         if (this.reviewByStudent !== null) {

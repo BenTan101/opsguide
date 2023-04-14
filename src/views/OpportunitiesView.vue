@@ -83,6 +83,7 @@
           :search="search"
           :items-per-page="5"
           @click:row="rowClick"
+          :loading="isLoading"
         ></v-data-table>
       </v-card>
     </div>
@@ -112,6 +113,7 @@ export default {
   components: { IndividualOpportunityView },
   data() {
     return {
+      isLoading: true,
       dialog: false,
       isTaking: false,
       isBookmarked: false,
@@ -149,6 +151,7 @@ export default {
       console.log("dssdf");
     },
     async populateTable(type) {
+      this.isLoading = true;
       this.opportunities = [];
       console.log("e");
       switch (type) {
@@ -174,6 +177,7 @@ export default {
 
       console.log(this.opportunities);
       console.log("g");
+      this.isLoading = false;
     },
     rowClick(opportunity) {
       console.log("Here");
