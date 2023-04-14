@@ -1,5 +1,8 @@
 <template>
   <v-container class="pa-16">
+    <v-btn class="mb-4" elevation="2" color="dark" to="/opportunities" icon>
+      <v-icon> mdi-arrow-left </v-icon>
+    </v-btn>
     <h3 class="font-weight-light mt-8 mb-2">
       All fields marked * are compulsory.
     </h3>
@@ -298,6 +301,20 @@ export default {
           theme: "bubble",
           position: "top-center",
         });
+
+        this.name = null;
+        this.department = null;
+        this.category = null;
+        this.scope = null;
+        this.workload = null;
+        this.subjectsChosen = [];
+        this.ticsChosen = [];
+        this.background = null;
+        this.duration = null;
+        this.eligibility = null;
+        this.yearsChosen = [];
+        this.recommendation = null;
+        this.timeline = null;
       } else {
         this.$toasted.show("Please fill up all fields.", {
           type: "error",

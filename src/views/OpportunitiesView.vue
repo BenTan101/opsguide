@@ -4,7 +4,7 @@
       class="ml-16 mb-4"
       v-if="seeOpportunity"
       elevation="2"
-      color="#333f48"
+      color="dark"
       @click="unseeOpportunity"
       icon
     >
@@ -14,7 +14,7 @@
       class="ml-4 mb-4"
       v-if="seeOpportunity && !store().state.isAdmin"
       elevation="2"
-      color="#333f48"
+      color="dark"
       @click="toggleTakeOpportunity"
       icon
     >
@@ -26,7 +26,7 @@
       class="ml-4 mb-4"
       v-if="seeOpportunity && !store().state.isAdmin"
       elevation="2"
-      color="#333f48"
+      color="dark"
       @click="toggleBookmarkOpportunity"
       icon
     >

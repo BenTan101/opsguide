@@ -11,7 +11,7 @@
 
     <v-btn
       class="mt-2 paleteal--text"
-      color="#333f48"
+      color="dark"
       elevation="5"
       rounded
       to="/opportunities"
