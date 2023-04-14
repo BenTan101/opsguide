@@ -149,16 +149,16 @@ import store from "@/store";
 export default {
   data() {
     return {
-      name: null,
-      category: null,
-      scope: null,
-      duration: null,
-      workload: null,
-      background: null,
-      recommendation: null,
-      eligibility: null,
-      timeline: null,
-      department: null,
+      name: "",
+      category: "",
+      scope: "",
+      duration: "",
+      workload: "",
+      background: "",
+      recommendation: "",
+      eligibility: "",
+      timeline: "",
+      department: "",
       tics: [],
       subjectsChosen: [],
       ticsChosen: [],
@@ -185,16 +185,16 @@ export default {
     reset(type) {
       switch (type) {
         case "department":
-          this.department = null;
+          this.department = "";
           break;
         case "category":
-          this.category = null;
+          this.category = "";
           break;
         case "scope":
-          this.scope = null;
+          this.scope = "";
           break;
         case "workload":
-          this.workload = null;
+          this.workload = "";
           break;
       }
     },
@@ -215,18 +215,12 @@ export default {
         "\nthis.yers: " + this.yearsChosen
       );
       return (
-        this.name !== null &&
-        this.category !== null &&
-        this.scope !== null &&
-        // this.duration !== null &&
-        // this.workload !== null &&
-        this.background !== null &&
-        // this.recommendation !== null &&
-        // this.eligibility !== null &&
-        // this.timeline !== null &&
-        this.department !== null
-        // this.tics !== [] &&
-        // this.subjectsChosen !== [] // BUT CAN BE OPTIONAL THO?? NEed to print out subejcts are what tho
+        this.name !== "" &&
+        this.category !== "" &&
+        this.scope !== "" &&
+        this.background !== "" &&
+        this.department !== "" &&
+        this.yearsChosen.length !== 0
       );
     },
     async submit() {
@@ -265,7 +259,7 @@ export default {
 
         // Insert years
         if (this.yearsChosen.length !== 0) {
-          let year = null;
+          let year = "";
           for (const y of this.yearsChosen) {
             year = await UserService.addYear({
               opportunityId: opportunityId,
@@ -276,7 +270,7 @@ export default {
 
         // Insert subjects
         if (this.subjectsChosen.length !== 0) {
-          let subject = null;
+          let subject = "";
           for (const s of this.subjectsChosen) {
             subject = await UserService.addSubject({
               opportunityId: opportunityId,
@@ -287,7 +281,7 @@ export default {
 
         console.log("TICS: ", this.ticsChosen);
         if (this.ticsChosen.length !== 0) {
-          let tic = null;
+          let tic = "";
           for (const t of this.ticsChosen) {
             tic = await UserService.addTIC({
               opportunityId: opportunityId,
@@ -302,21 +296,21 @@ export default {
           position: "top-center",
         });
 
-        this.name = null;
-        this.department = null;
-        this.category = null;
-        this.scope = null;
-        this.workload = null;
+        this.name = "";
+        this.department = "";
+        this.category = "";
+        this.scope = "";
+        this.workload = "";
         this.subjectsChosen = [];
         this.ticsChosen = [];
-        this.background = null;
-        this.duration = null;
-        this.eligibility = null;
+        this.background = "";
+        this.duration = "";
+        this.eligibility = "";
         this.yearsChosen = [];
-        this.recommendation = null;
-        this.timeline = null;
+        this.recommendation = "";
+        this.timeline = "";
       } else {
-        this.$toasted.show("Please fill up all fields.", {
+        this.$toasted.show("Please fill up all required fields.", {
           type: "error",
           theme: "bubble",
           position: "top-center",
