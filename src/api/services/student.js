@@ -2,10 +2,16 @@ const db = require("./db");
 
 async function getAllOpportunities() {
   return await db.query(
+    // https://stackoverflow.com/questions/14540736/sql-avoid-cartesian-product
     `
         SELECT o.opportunityId id, opportunityName, category, scope, subject, year, duration, workload, tic
-        FROM Opportunity o, Year y, Subject s, TIC t
-        WHERE o.opportunityId = y.opportunityId AND o.opportunityId = s.opportunityId AND o.opportunityId = t.opportunityId
+        FROM Opportunity o
+        LEFT JOIN Year y
+        ON o.opportunityId = y.opportunityId
+        LEFT JOIN Subject s
+        ON o.opportunityId = s.opportunityId
+        LEFT JOIN TIC t
+        ON o.opportunityId = t.opportunityId
         ORDER BY opportunityName;
     `
   );
@@ -321,6 +327,69 @@ async function findAdmin(email) {
   return await db.query(`SELECT * FROM Admin WHERE adminEmail = "${email}"`);
 }
 
+async function getDepartments() {
+  return await db.query(`SELECT * FROM Department`);
+}
+
+async function createOpportunity(
+  name,
+  category,
+  scope,
+  duration,
+  workload,
+  background,
+  recommendation,
+  eligibility,
+  timeline,
+  departmentId,
+  email
+) {
+  return await db.query(
+    `
+        INSERT INTO Opportunity
+        VALUES (
+                null,
+                "${name}",
+                "${category}",
+                "${scope}",
+                "${duration}",
+                "${workload}",
+                "${background}",
+                "${recommendation}",
+                "${eligibility}",
+                "${timeline}",
+                CURDATE(),
+                "${departmentId}",
+                "${email}"
+                );
+    `
+  );
+}
+
+async function getOpportunityByName(name) {
+  return await db.query(
+    `SELECT * FROM Opportunity WHERE opportunityName = "${name}";`
+  );
+}
+
+async function addYear(opportunityId, year) {
+  return await db.query(
+    `INSERT INTO Year VALUES ("${opportunityId}", "${year}")`
+  );
+}
+
+async function addSubject(opportunityId, subject) {
+  return await db.query(
+    `INSERT INTO Subject VALUES ("${opportunityId}", "${subject}")`
+  );
+}
+
+async function addTIC(opportunityId, tic) {
+  return await db.query(
+    `INSERT INTO TIC VALUES ("${opportunityId}", "${tic}")`
+  );
+}
+
 module.exports = {
   getAllOpportunities,
   getMyOpportunities,
@@ -356,5 +425,11 @@ module.exports = {
   updateStudent,
   findStudent,
   findAdmin,
+  getDepartments,
+  createOpportunity,
+  getOpportunityByName,
+  addYear,
+  addSubject,
+  addTIC,
   // getEmails,
 };

@@ -12,7 +12,7 @@
     </v-btn>
     <v-btn
       class="ml-4 mb-4"
-      v-if="seeOpportunity"
+      v-if="seeOpportunity && !store().state.isAdmin"
       elevation="2"
       color="#333f48"
       @click="toggleTakeOpportunity"
@@ -24,7 +24,7 @@
     </v-btn>
     <v-btn
       class="ml-4 mb-4"
-      v-if="seeOpportunity"
+      v-if="seeOpportunity && !store().state.isAdmin"
       elevation="2"
       color="#333f48"
       @click="toggleBookmarkOpportunity"
@@ -37,16 +37,21 @@
     <div v-if="!seeOpportunity">
       <!--    <div v-if="store().state.isLoggedIn">-->
       <div id="flexbox">
-        <h3 v-bind:class="getTabStyle('All')" @click="changeTab('All')">
+        <h3
+          v-bind:class="getTabStyle('All')"
+          @click="!store().state.isAdmin ? changeTab('All') : ''"
+        >
           All Opportunities
         </h3>
         <h3
+          v-if="!store().state.isAdmin"
           v-bind:class="getTabStyle('Opportunities')"
           @click="changeTab('Opportunities')"
         >
           My Opportunities
         </h3>
         <h3
+          v-if="!store().state.isAdmin"
           v-bind:class="getTabStyle('Bookmarks')"
           @click="changeTab('Bookmarks')"
         >
@@ -56,6 +61,13 @@
 
       <v-card>
         <v-card-title>
+          <v-btn
+            v-if="store().state.isAdmin"
+            class="paleteal--text ml-2"
+            color="secondary"
+            to="/opportunities/add"
+            >Add
+          </v-btn>
           <v-spacer></v-spacer>
           <v-text-field
             v-model="search"
@@ -100,6 +112,7 @@ export default {
   components: { IndividualOpportunityView },
   data() {
     return {
+      dialog: false,
       isTaking: false,
       isBookmarked: false,
       opportunityId: -1,

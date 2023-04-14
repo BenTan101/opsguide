@@ -451,6 +451,92 @@ router.post("/is-admin", async function (req, res, next) {
   }
 });
 
+router.get("/get-departments", async function (req, res, next) {
+  try {
+    let details = await opsguide.getDepartments();
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error getting departments`, err.message);
+    next(err);
+  }
+});
+
+router.post("/create-opportunity", async function (req, res, next) {
+  try {
+    let details = await opsguide.createOpportunity(
+      req.body["name"],
+      req.body["category"],
+      req.body["scope"],
+      req.body["duration"],
+      req.body["workload"],
+      req.body["background"],
+      req.body["recommendation"],
+      req.body["eligibility"],
+      req.body["timeline"],
+      req.body["departmentId"],
+      req.body["email"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error creating opportunity`, err.message);
+    next(err);
+  }
+});
+
+router.post("/get-opportunity-by-name", async function (req, res, next) {
+  try {
+    let details = await opsguide.getOpportunityByName(req.body["name"]);
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error getting opportunity by name`, err.message);
+    next(err);
+  }
+});
+
+router.post("/add-year", async function (req, res, next) {
+  try {
+    let details = await opsguide.addYear(
+      req.body["opportunityId"],
+      req.body["year"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error adding year`, err.message);
+    next(err);
+  }
+});
+
+router.post("/add-subject", async function (req, res, next) {
+  try {
+    let details = await opsguide.addSubject(
+      req.body["opportunityId"],
+      req.body["subject"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error adding subject`, err.message);
+    next(err);
+  }
+});
+
+router.post("/add-tic", async function (req, res, next) {
+  try {
+    let details = await opsguide.addTIC(
+      req.body["opportunityId"],
+      req.body["tic"]
+    );
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error adding tic`, err.message);
+    next(err);
+  }
+});
 // app.use(
 //   "/emails",
 //   router.get("/", async function (req, res, next) {

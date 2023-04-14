@@ -113,7 +113,7 @@
             v-bind="attrs"
             v-on="on"
             class="paleteal--text ml-2"
-            color="#b71c1c"
+            color="error"
             >Delete
           </v-btn>
         </template>
@@ -173,6 +173,7 @@ export default {
       this.$emit("emitSetIsBookmarked", value);
     },
     async loadOpportunity() {
+      // TODO: Check exceptions for stuff that may be null
       let raw = await UserService.getOpportunity({ opportunityId: this.id });
       console.log("raw");
       console.log(raw);

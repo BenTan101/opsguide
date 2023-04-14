@@ -15,6 +15,11 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/OpportunitiesView.vue"),
   },
   {
+    path: "/opportunities/add",
+    name: "opportunities-add",
+    component: () => import("../views/AddOpportunityView.vue"),
+  },
+  {
     path: "/modules",
     name: "modules",
     component: () => import("../views/ModulesView.vue"),

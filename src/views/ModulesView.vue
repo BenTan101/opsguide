@@ -2,13 +2,21 @@
   <div class="ma-16">
     <div>
       <div id="flexbox">
-        <h3 v-bind:class="getTabStyle('All')" @click="changeTab('All')">
+        <h3
+          v-bind:class="getTabStyle('All')"
+          @click="!store().state.isAdmin ? changeTab('All') : ''"
+        >
           All Modules
         </h3>
-        <h3 v-bind:class="getTabStyle('Modules')" @click="changeTab('Modules')">
+        <h3
+          v-if="!store().state.isAdmin"
+          v-bind:class="getTabStyle('Modules')"
+          @click="changeTab('Modules')"
+        >
           My Modules
         </h3>
         <h3
+          v-if="!store().state.isAdmin"
           v-bind:class="getTabStyle('Bookmarks')"
           @click="changeTab('Bookmarks')"
         >
@@ -32,7 +40,7 @@
           :items="modules"
           :search="search"
           :items-per-page="5"
-          @click:row="rowClick"
+          @click:row="!store().state.isAdmin ? rowClick : ''"
         >
         </v-data-table>
         <v-dialog v-model="dialog" width="500px">
@@ -101,6 +109,7 @@ export default {
     };
   },
   methods: {
+    // TODO: Let admin add modules
     store() {
       return store;
     },

@@ -81,7 +81,7 @@ export const functions = {
       }
 
       if (i === raw.length - 1) {
-        if (prev === null) prev = curr;
+        prev = curr;
         formatted.push({
           id: prev.id,
           name: prev.opportunityName,

@@ -213,4 +213,39 @@ export default {
   isStudentOrAdmin(credentials) {
     return this.isStudent(credentials) || this.isAdmin(credentials);
   },
+  getDepartments() {
+    return api("/get-departments", {
+      method: "GET",
+    });
+  },
+  createOpportunity(credentials) {
+    return api("/create-opportunity", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  getOpportunityByName(credentials) {
+    return api("/get-opportunity-by-name", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  addYear(credentials) {
+    return api("/add-year", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  addSubject(credentials) {
+    return api("/add-subject", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  addTIC(credentials) {
+    return api("/add-tic", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
 };
