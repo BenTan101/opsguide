@@ -407,6 +407,15 @@ async function createOpportunity(
   );
 }
 
+async function deleteOpportunity(id) {
+  return await db.query(
+    `
+        DELETE FROM Opportunity
+        WHERE opportunityId = "${id}"
+    `
+  );
+}
+
 async function getOpportunityByName(name) {
   return await db.query(
     `SELECT * FROM Opportunity WHERE opportunityName = "${name}";`
@@ -470,6 +479,7 @@ module.exports = {
   findAdmin,
   getDepartments,
   createOpportunity,
+  deleteOpportunity,
   getOpportunityByName,
   addYear,
   addSubject,

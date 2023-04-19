@@ -509,6 +509,17 @@ router.post("/create-opportunity", async function (req, res, next) {
   }
 });
 
+router.post("/delete-opportunity", async function (req, res, next) {
+  try {
+    let details = await opsguide.deleteOpportunity(req.body["id"]);
+    res.json(details);
+    return details;
+  } catch (err) {
+    console.error(`Error deleting opportunity`, err.message);
+    next(err);
+  }
+});
+
 router.post("/get-opportunity-by-name", async function (req, res, next) {
   try {
     let details = await opsguide.getOpportunityByName(req.body["name"]);

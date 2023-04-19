@@ -200,19 +200,19 @@ export default {
     },
     isEverythingValid() {
       console.log(
-        "\nthis.name: " + this.name,
-        "\nthis.cate: " + this.category,
-        "\nthis.scop: " + this.scope,
-        "\nthis.dura: " + this.duration,
-        "\nthis.work: " + this.workload,
-        "\nthis.back: " + this.background,
-        "\nthis.reco: " + this.recommendation,
-        "\nthis.elig: " + this.eligibility,
-        "\nthis.time: " + this.timeline,
-        "\nthis.depa: " + this.department,
-        "\nthis.tics: " + this.ticsChosen,
-        "\nthis.subj: " + this.subjectsChosen,
-        "\nthis.yers: " + this.yearsChosen
+        "\nname: " + this.name,
+        "\ncate: " + this.category,
+        "\nscop: " + this.scope,
+        "\ndura: " + this.duration,
+        "\nwork: " + this.workload,
+        "\nback: " + this.background,
+        "\nreco: " + this.recommendation,
+        "\nelig: " + this.eligibility,
+        "\ntime: " + this.timeline,
+        "\ndepa: " + this.department,
+        "\ntics: " + this.ticsChosen,
+        "\nsubj: " + this.subjectsChosen,
+        "\nyers: " + this.yearsChosen
       );
       return (
         this.name !== "" &&

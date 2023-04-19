@@ -235,6 +235,12 @@ export default {
       body: JSON.stringify(credentials),
     });
   },
+  deleteOpportunity(credentials) {
+    return api("/delete-opportunity", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
   getOpportunityByName(credentials) {
     return api("/get-opportunity-by-name", {
       method: "POST",

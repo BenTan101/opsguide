@@ -12,6 +12,41 @@
     </v-btn>
     <v-btn
       class="ml-4 mb-4"
+      v-if="seeOpportunity && store().state.isAdmin"
+      elevation="2"
+      color="dark"
+      @click="editOpportunity"
+      icon
+    >
+      <v-icon> mdi-pencil </v-icon>
+    </v-btn>
+    <v-btn
+      class="ml-4 mb-4"
+      v-if="seeOpportunity && store().state.isAdmin"
+      elevation="2"
+      color="dark"
+      @click="deleteOpportunity"
+      icon
+    >
+      <v-icon> mdi-delete </v-icon>
+    </v-btn>
+
+    <v-dialog v-model="dialog" width="300px">
+      <v-card>
+        <v-card-title>
+          <span>Are you sure?</span>
+        </v-card-title>
+        <v-card-text>Deleting this opportunity is irreversible.</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="dialog = false">Cancel</v-btn>
+          <v-btn color="error" text @click="deleteOpportunity">Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-btn
+      class="ml-4 mb-4"
       v-if="seeOpportunity && !store().state.isAdmin"
       elevation="2"
       color="dark"
@@ -63,10 +98,11 @@
         <v-card-title>
           <v-btn
             v-if="store().state.isAdmin"
-            class="paleteal--text ml-2"
-            color="secondary"
             to="/opportunities/add"
-            >Add
+            elevation="2"
+            color="secondary"
+            icon
+            ><v-icon> mdi-plus </v-icon>
           </v-btn>
           <v-spacer></v-spacer>
           <v-text-field
@@ -189,6 +225,18 @@ export default {
       this.seeOpportunity = false;
       this.populateTable(this.opportunitiesTab);
     },
+    editOpportunity() {
+      // TODO: NOT DOING TOMORROW MORNING DATA POPULATION SHITTTTT
+    },
+    async deleteOpportunity() {
+      if (!this.dialog) {
+        this.dialog = true;
+      } else {
+        await UserService.deleteOpportunity({ id: this.opportunityId });
+        this.dialog = false;
+        this.unseeOpportunity();
+      }
+    },
     async toggleTakeOpportunity() {
       console.log("Toggle take");
       let credentials = {
@@ -251,6 +299,9 @@ export default {
   beforeMount() {
     this.populateTable("All");
   },
+  // TODO: https://v2.vuetifyjs.com/en/components/sparklines/
+  // TODO: Add pretty graphssss for like reviews per month or something
+  // TODO: Or stats for admins
 };
 </script>
 
