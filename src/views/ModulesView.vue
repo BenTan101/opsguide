@@ -177,10 +177,6 @@ export default {
       this.initialBookmark = this.bookmark;
     },
     async submit() {
-      console.log(this.take);
-      console.log(this.bookmark);
-      console.log(this.module);
-
       if (
         this.initialTake === this.take &&
         this.initialBookmark === this.bookmark &&
@@ -188,7 +184,6 @@ export default {
         this.bookmark !== null
       ) {
         this.dialog = false;
-        console.log("nothing has changed");
         return;
       }
 

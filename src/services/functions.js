@@ -21,8 +21,6 @@ export const functions = {
     );
   },
   formatOpportunitiesForTable: function (raw) {
-    console.log(raw);
-    console.log("rawww");
     const formatted = [];
     let subjects = [];
     let years = [];
@@ -31,10 +29,6 @@ export const functions = {
     for (let i = 0; i < raw.length; i++) {
       let prev = i === 0 ? null : raw[i - 1];
       let curr = raw[i];
-
-      console.log(i, "-----------");
-      console.log(curr);
-      console.log(prev);
 
       if (prev !== null && curr.id !== prev.id) {
         formatted.push({

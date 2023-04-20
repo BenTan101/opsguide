@@ -57,7 +57,6 @@ export default {
     });
   },
   signup(credentials) {
-    console.log(JSON.stringify(credentials));
     return api("/signup", {
       method: "POST",
       body: JSON.stringify(credentials),
@@ -66,21 +65,18 @@ export default {
 
   /**** READ ****/
   getAllModules(credentials) {
-    console.log(JSON.stringify(credentials));
     return api("/get-all-modules", {
       method: "GET",
       body: JSON.stringify(credentials),
     });
   },
   getMyModules(credentials) {
-    console.log(JSON.stringify(credentials));
     return api("/get-my-modules", {
       method: "POST",
       body: JSON.stringify(credentials),
     });
   },
   getBookmarkedModules(credentials) {
-    console.log(JSON.stringify(credentials));
     return api("/get-bookmarked-modules", {
       method: "POST",
       body: JSON.stringify(credentials),
@@ -104,14 +100,12 @@ export default {
     });
   },
   getMyOpportunities(credentials) {
-    console.log(JSON.stringify(credentials));
     return api("/get-my-opportunities", {
       method: "POST",
       body: JSON.stringify(credentials),
     });
   },
   getBookmarkedOpportunities(credentials) {
-    console.log(JSON.stringify(credentials));
     return api("/get-bookmarked-opportunities", {
       method: "POST",
       body: JSON.stringify(credentials),
@@ -176,26 +170,22 @@ export default {
     });
   },
   login(credentials) {
-    console.log(JSON.stringify(credentials));
     return api("/login", {
       method: "POST",
       body: JSON.stringify(credentials),
     });
   },
   adminLogin(credentials) {
-    console.log(JSON.stringify(credentials));
     return api("/admin-login", {
       method: "POST",
       body: JSON.stringify(credentials),
     });
   },
   isStudent(credentials) {
-    console.log(credentials);
     let details = api("/is-student", {
       method: "POST",
       body: JSON.stringify(credentials),
     });
-    console.log(details);
     return details;
   },
   isAdmin(credentials) {

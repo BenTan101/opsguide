@@ -21,8 +21,6 @@ export default new Vuex.Store({
   },
   mutations: {
     login(state, details) {
-      console.log("VOILA");
-      console.log(details);
       state.isLoggedIn = true;
       state.email = details["email"];
       state.name = details["name"];
@@ -31,8 +29,6 @@ export default new Vuex.Store({
       state.isAdmin = false;
     },
     adminLogin(state, details) {
-      console.log("VOILADMIN");
-      console.log(details);
       state.isLoggedIn = true;
       state.email = details["email"];
       state.name = details["name"];

@@ -16,17 +16,12 @@ export async function api(url, params = {}) {
     params.headers
   );
 
-  console.log("before here");
   let response = await fetch(BASE_URL + url, params);
-  console.log("HERE");
 
   let json = (await response.json()) || {};
   if (!response.ok) {
     let errorMessage = json.error || response.status;
-    console.log("inside error");
     throw new Error(errorMessage);
   }
-  console.log("HERE");
-
   return json;
 }

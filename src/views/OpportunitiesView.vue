@@ -165,7 +165,6 @@ export default {
         { text: "Duration", value: "duration" },
         { text: "Workload", value: "workload" },
         { text: "TIC", value: "tic" },
-        // Other attributes like opportunityId, background, recommendation, eligibility, timeline, timestamp, departmentId, adminEmail
       ],
       opportunities: [],
     };
@@ -181,14 +180,11 @@ export default {
     },
     async changeTab(type) {
       this.opportunitiesTab = type;
-      console.log("Yes");
       await this.populateTable(type);
-      console.log("dssdf");
     },
     async populateTable(type) {
       this.isLoading = true;
       this.opportunities = [];
-      console.log("e");
       switch (type) {
         case "All":
           this.opportunities = functions.formatOpportunitiesForTable(
@@ -208,15 +204,9 @@ export default {
           );
           break;
       }
-      console.log("f");
-
-      console.log(this.opportunities);
-      console.log("g");
       this.isLoading = false;
     },
     rowClick(opportunity) {
-      console.log("Here");
-      console.log(opportunity);
       this.opportunityId = opportunity["id"];
       this.seeOpportunity = true;
     },
@@ -237,15 +227,10 @@ export default {
       }
     },
     async toggleTakeOpportunity() {
-      console.log("Toggle take");
       let credentials = {
         email: store.state.email,
         opportunityId: this.opportunityId,
       };
-
-      console.log(credentials);
-      console.log(await UserService.checkTakeOpportunity(credentials));
-      console.log(this.isTaking);
 
       if (!this.isTaking) {
         await UserService.takeOpportunity(credentials);
@@ -268,7 +253,6 @@ export default {
       this.isTaking = !this.isTaking;
     },
     async toggleBookmarkOpportunity() {
-      console.log("Toggle bookmark");
       let credentials = {
         email: store.state.email,
         opportunityId: this.opportunityId,

@@ -130,13 +130,9 @@ export default {
             passwordHash: await functions.getSHA256Hash(this.password),
           });
 
-          console.log("Je uiss admin");
-
           const name = response[0]["name"];
 
           if (name !== "") {
-            console.log("Je SUISSS admin");
-
             store.commit("adminLogin", {
               email: response[0]["adminEmail"],
               name: name,
@@ -163,7 +159,6 @@ export default {
     },
     async signup() {
       let rawOpps = await UserService.getAllOpportunities();
-      console.log(rawOpps);
       functions.formatOpportunitiesForTable(rawOpps);
 
       // Check all field are non-empty
@@ -201,13 +196,6 @@ export default {
         return;
       }
 
-      console.log(
-        this.signupEmail,
-        this.name,
-        this.signupPassword,
-        this.graduationYear
-      );
-
       this.error = null;
       try {
         // Signup
@@ -233,19 +221,11 @@ export default {
           graduationYear: this.graduationYear,
         });
 
-        console.log(signupResult);
-        console.log(
-          this.signupEmail,
-          await functions.getSHA256Hash(this.signupPassword)
-        );
-
         // Login
         const response = await UserService.login({
           email: this.signupEmail,
           passwordHash: await functions.getSHA256Hash(this.signupPassword),
         });
-
-        console.log(response);
 
         this.name = response[0]["name"];
         this.graduationYear = parseInt(response[0]["graduationYear"]);

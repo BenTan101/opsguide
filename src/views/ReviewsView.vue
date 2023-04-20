@@ -69,12 +69,8 @@ export default {
       return store;
     },
     async loadReviews() {
-      console.log("Reviews?");
       if (store.state.isAdmin) {
-        console.log("Reviews.");
         this.reviews = await UserService.getUnapprovedReviews();
-        console.log("Reviewssss");
-        console.log(this.reviews);
       } else {
         this.reviews = await UserService.getAllApprovedReviewsByStudent({
           email: store.state.email,
@@ -82,7 +78,6 @@ export default {
       }
     },
     async approveReview(email, opportunityId) {
-      console.log(email, opportunityId);
       if (
         await UserService.approveReview({
           email: email,
@@ -98,7 +93,6 @@ export default {
       await this.loadReviews();
     },
     async deleteReview(email, opportunityId) {
-      console.log(email, opportunityId);
       if (
         await UserService.deleteReview({
           email: email,

@@ -162,9 +162,9 @@ export default {
       title: "",
       body: "",
       adminEmail: null, // Byline | adminEmail FK
-      adminName: null,
+      adminName: null, // Byline
       background: null, // Main body
-      category: null, // Chips?
+      category: null, // Chips
       department: null, // Byline | departmentId fk
       duration: null, // Main body
       eligibility: null, // Main body
@@ -173,8 +173,8 @@ export default {
       scope: null, // Chips?
       timeline: null, // Main body
       timestamp: null, // Byline
-      workload: null, // Chips?
-      subjects: [], // Chips?
+      workload: null, // Chips
+      subjects: [], // Chips
       years: [], // Byline
       tics: [], // Byline
       reviews: [],
@@ -192,11 +192,7 @@ export default {
       this.$emit("emitSetIsBookmarked", value);
     },
     async loadOpportunity() {
-      // TODO: REMOVE ALL CONSOLE.LOGS
-      console.log(this.id);
       let raw = await UserService.getOpportunity({ opportunityId: this.id });
-      console.log("raw");
-      console.log(raw);
 
       for (let i = 0; i < raw.length; i++) {
         if (!this.subjects.includes(raw[i].subject))
@@ -210,9 +206,6 @@ export default {
           departmentId: raw[0]["departmentId"],
         })
       )[0]["departmentName"];
-
-      console.log("the department");
-      console.log(this.subjects);
 
       this.timestamp = new Intl.DateTimeFormat("en-GB", {
         dateStyle: "long",
@@ -250,11 +243,9 @@ export default {
       )[0]["name"];
 
       // Load reviews
-      console.log("Reviews");
       this.reviews = await UserService.getApprovedReviews({
         opportunityId: this.id,
       });
-      console.log(this.reviews);
 
       // Load student's review
       this.reviewByStudent = await UserService.getReviewByStudent({
@@ -282,13 +273,6 @@ export default {
       this.setIsBookmarked(
         (await UserService.checkBookmarkOpportunity(credentials)).length !== 0
       );
-      console.log("TBTBTB");
-      console.log(credentials);
-      console.log((await UserService.checkTakeOpportunity(credentials)).length);
-      console.log(
-        (await UserService.checkBookmarkOpportunity(credentials)).length
-      );
-      console.log(this.isTaking, this.isBookmarked);
     },
     isReviewValid() {
       return (
@@ -313,7 +297,6 @@ export default {
         this.reviewByStudent !== null ? this.reviewByStudent["body"] : "";
     },
     async submitReview() {
-      console.log(this.reviewByStudent);
       if (
         this.reviewByStudent !== null &&
         !this.reviewByStudent["isApproved"]
@@ -330,7 +313,6 @@ export default {
         return;
       }
       if (this.isReviewValid()) {
-        console.log("Here");
         if (this.reviewByStudent !== null) {
           await UserService.updateReview({
             rating: this.rating,
@@ -348,7 +330,6 @@ export default {
             opportunityId: this.id,
           });
         }
-        console.log("awaited");
         await this.loadOpportunity();
 
         this.$toasted.show(
@@ -392,7 +373,6 @@ export default {
   },
 
   beforeMount() {
-    console.log("Before mounting");
     this.loadOpportunity();
   },
 };
