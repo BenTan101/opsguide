@@ -40,7 +40,7 @@
           :items="modules"
           :search="search"
           :items-per-page="5"
-          @click:row="!store().state.isAdmin ? rowClick : ''"
+          @click:row="rowClick"
           :loading="isLoading"
         >
         </v-data-table>
@@ -156,6 +156,7 @@ export default {
       this.isLoading = false;
     },
     async rowClick(module) {
+      if (store.state.isAdmin) return;
       this.dialog = true;
       this.reset();
       this.module = module;

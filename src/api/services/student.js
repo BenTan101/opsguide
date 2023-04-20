@@ -50,8 +50,30 @@ async function createOpportunity(
   departmentId,
   email
 ) {
-  return await db.query(
+  if (workload === null) {
+    return await db.query(
+      `
+        INSERT INTO Opportunity
+        VALUES (
+                null,
+                "${name}",
+                "${category}",
+                "${scope}",
+                "${duration}",
+                null,
+                "${background}",
+                "${recommendation}",
+                "${eligibility}",
+                "${timeline}",
+                CURDATE(),
+                "${departmentId}",
+                "${email}"
+                );
     `
+    );
+  } else {
+    return await db.query(
+      `
         INSERT INTO Opportunity
         VALUES (
                 null,
@@ -69,7 +91,8 @@ async function createOpportunity(
                 "${email}"
                 );
     `
-  );
+    );
+  }
 }
 
 async function addYear(opportunityId, year) {

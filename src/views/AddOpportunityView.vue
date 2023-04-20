@@ -207,21 +207,6 @@ export default {
       }
     },
     isEverythingValid() {
-      console.log(
-        "\nname: " + this.name,
-        "\ncate: " + this.category,
-        "\nscop: " + this.scope,
-        "\ndura: " + this.duration,
-        "\nwork: " + this.workload,
-        "\nback: " + this.background,
-        "\nreco: " + this.recommendation,
-        "\nelig: " + this.eligibility,
-        "\ntime: " + this.timeline,
-        "\ndepa: " + this.department,
-        "\ntics: " + this.ticsChosen,
-        "\nsubj: " + this.subjectsChosen,
-        "\nyers: " + this.yearsChosen
-      );
       return (
         this.name !== "" &&
         this.category !== "" &&
@@ -233,7 +218,6 @@ export default {
     },
     async submit() {
       let allOpportunities = await UserService.getAllOpportunities();
-      console.log(allOpportunities);
 
       if (this.isEverythingValid()) {
         let opportunityDetails = {
@@ -241,7 +225,7 @@ export default {
           category: this.category,
           scope: this.scope,
           duration: this.duration,
-          workload: this.workload,
+          workload: this.workload === "" ? null : this.workload,
           background: this.background,
           recommendation: this.recommendation,
           eligibility: this.eligibility,
@@ -250,19 +234,11 @@ export default {
           email: store.state.email,
         };
 
-        console.log("opportunity Details-------------");
-        console.log(opportunityDetails);
-
         // Insert opportunity
         await UserService.createOpportunity(opportunityDetails);
-
-        console.log(
-          await UserService.getOpportunityByName({ name: this.name })
-        );
         let opportunityId = (
           await UserService.getOpportunityByName({ name: this.name })
         )[0]["opportunityId"];
-        console.log("The opportunityId: ", opportunityId);
 
         // Insert years
         if (this.yearsChosen.length !== 0) {
@@ -286,7 +262,6 @@ export default {
           }
         }
 
-        console.log("TICS: ", this.ticsChosen);
         if (this.ticsChosen.length !== 0) {
           let tic = "";
           for (const t of this.ticsChosen) {
