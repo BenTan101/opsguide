@@ -14,7 +14,7 @@
       color="dark"
       elevation="5"
       rounded
-      to="/opportunities"
+      :to="store().state.isLoggedIn ? '/opportunities' : '/login'"
       >Let's go.</v-btn
     >
 
@@ -56,7 +56,14 @@
 </template>
 
 <script>
+import store from "@/store";
+
 export default {
+  methods: {
+    store() {
+      return store;
+    },
+  },
   data() {
     return {};
   },

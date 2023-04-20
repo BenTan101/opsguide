@@ -69,8 +69,7 @@
         {{ isBookmarked ? "mdi-bookmark" : "mdi-bookmark-outline" }}
       </v-icon>
     </v-btn>
-    <div v-if="!seeOpportunity">
-      <!--    <div v-if="store().state.isLoggedIn">-->
+    <div v-if="store().state.isLoggedIn && !seeOpportunity">
       <div id="flexbox">
         <h3
           v-bind:class="getTabStyle('All')"
@@ -226,7 +225,7 @@ export default {
       this.populateTable(this.opportunitiesTab);
     },
     editOpportunity() {
-      // TODO: NOT DOING TOMORROW MORNING DATA POPULATION SHITTTTT
+      // TODO: Work in Progress...
     },
     async deleteOpportunity() {
       if (!this.dialog) {
@@ -299,9 +298,6 @@ export default {
   beforeMount() {
     this.populateTable("All");
   },
-  // TODO: https://v2.vuetifyjs.com/en/components/sparklines/
-  // TODO: Add pretty graphssss for like reviews per month or something
-  // TODO: Or stats for admins
 };
 </script>
 

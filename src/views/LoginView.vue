@@ -162,8 +162,6 @@ export default {
       }
     },
     async signup() {
-      // TODO: Validation + Validation for opportunity creation
-      // TODO: like number of characters in strings ig
       let rawOpps = await UserService.getAllOpportunities();
       console.log(rawOpps);
       functions.formatOpportunitiesForTable(rawOpps);

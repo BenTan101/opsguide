@@ -3,7 +3,12 @@
     <h1 class="pb-8">Hello, {{ store().state.name }}!</h1>
     <h2 class="pb-4">Details</h2>
     <p>{{ store().state.email }}</p>
-    <v-text-field label="Name" filled v-model="name"></v-text-field>
+    <v-text-field
+      label="Name"
+      filled
+      v-model="name"
+      counter="100"
+    ></v-text-field>
     <v-text-field
       label="Year of graduation"
       filled
@@ -31,12 +36,14 @@
       type="password"
       filled
       v-model="newPassword"
+      counter="50"
     ></v-text-field>
     <v-text-field
       label="Retype new password"
       type="password"
       filled
       v-model="newPasswordRetyped"
+      counter="50"
       :error-messages="
         this.newPassword !== this.newPasswordRetyped
           ? ['Passwords do not match.']
@@ -91,6 +98,13 @@ export default {
         position: "top-center",
       });
     },
+    isPasswordValid() {
+      return (
+        this.newPassword === this.newPasswordRetyped &&
+        this.newPassword !== "" &&
+        this.newPassword.length <= 50
+      );
+    },
     async update() {
       if (
         !store.state.isAdmin &&
@@ -100,29 +114,34 @@ export default {
           (this.oldPassword === "" && this.newPassword === "")) &&
         functions.isGraduationYearValid(this.graduationYear) &&
         this.graduationYear !== "" &&
-        this.name !== ""
+        this.name !== "" &&
+        this.name.length <= 100
       ) {
         await UserService.updateStudent({
           email: this.email,
           name: this.name,
-          passwordHash:
-            this.newPassword === this.newPasswordRetyped &&
-            this.newPassword !== ""
-              ? await functions.getSHA256Hash(this.newPassword)
-              : this.passwordHash,
+          passwordHash: this.isPasswordValid()
+            ? await functions.getSHA256Hash(this.newPassword)
+            : this.passwordHash,
           graduationYear: this.graduationYear,
         });
 
         store.commit("login", {
           email: this.email,
           name: this.name,
-          passwordHash:
-            this.newPassword === this.newPasswordRetyped &&
-            this.newPassword !== ""
-              ? await functions.getSHA256Hash(this.newPassword)
-              : this.passwordHash,
+          passwordHash: this.isPasswordValid()
+            ? await functions.getSHA256Hash(this.newPassword)
+            : this.passwordHash,
           graduationYear: this.graduationYear,
         });
+
+        if (!this.isPasswordValid()) {
+          this.$toasted.show("Password not updated.", {
+            type: "error",
+            theme: "bubble",
+            position: "top-center",
+          });
+        }
 
         this.passwordHash = store.state.passwordHash;
         this.oldPassword = "";
@@ -145,22 +164,26 @@ export default {
         await UserService.updateAdmin({
           email: this.email,
           name: this.name,
-          passwordHash:
-            this.newPassword === this.newPasswordRetyped &&
-            this.newPassword !== ""
-              ? await functions.getSHA256Hash(this.newPassword)
-              : this.passwordHash,
+          passwordHash: this.isPasswordValid()
+            ? await functions.getSHA256Hash(this.newPassword)
+            : this.passwordHash,
         });
 
         store.commit("adminLogin", {
           email: this.email,
           name: this.name,
-          passwordHash:
-            this.newPassword === this.newPasswordRetyped &&
-            this.newPassword !== ""
-              ? await functions.getSHA256Hash(this.newPassword)
-              : this.passwordHash,
+          passwordHash: this.isPasswordValid()
+            ? await functions.getSHA256Hash(this.newPassword)
+            : this.passwordHash,
         });
+
+        if (!this.isPasswordValid()) {
+          this.$toasted.show("Password not updated.", {
+            type: "error",
+            theme: "bubble",
+            position: "top-center",
+          });
+        }
 
         this.passwordHash = store.state.passwordHash;
         this.oldPassword = "";

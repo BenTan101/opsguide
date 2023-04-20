@@ -12,7 +12,6 @@
       (NRP).
     </p>
     <v-text-field filled v-model="name"></v-text-field>
-    <!-- TODO: Make code less repeated -->
     <h2>Department*</h2>
     <v-radio-group v-model="department" row hide-details>
       <v-radio
@@ -164,8 +163,17 @@ export default {
       ticsChosen: [],
       yearsChosen: [],
       departments: [],
-      categories: ["Competition", "Research", "IHL Module", "Leadership"],
-      scopes: ["Internal", "External", "National", "International"],
+      categories: [
+        "Competition",
+        "Research",
+        "IHL Module",
+        "Leadership",
+        "Attachment/Internship",
+        "OSAP",
+        "SEP",
+        "Others",
+      ],
+      scopes: ["Internal", "External", "National", "International", "Others"],
       workloads: ["Low", "Moderate", "High", "Very High"],
       subjects: [
         "CS",
@@ -227,7 +235,6 @@ export default {
       let allOpportunities = await UserService.getAllOpportunities();
       console.log(allOpportunities);
 
-      // TODO: do create opportunity
       if (this.isEverythingValid()) {
         let opportunityDetails = {
           name: this.name,

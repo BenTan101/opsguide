@@ -25,7 +25,7 @@
 
     <div id="bottom-bar">
       <p>
-        A CS6131 Assignment by Lee I-Shiang (M23604). View the original site
+        A CS6131 Project by Lee I-Shiang (M23604). View the original site
         <a class="dark-link" href="https://wiki.nush.app">here</a>.
       </p>
     </div>

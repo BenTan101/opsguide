@@ -78,72 +78,74 @@
         <div>{{ r["body"] }}</div>
       </v-card>
     </span>
-    <h3 class="light mt-8 mb-2">
-      {{
-        reviewByStudent !== null ? "Update my review..." : "Write a review..."
-      }}
-    </h3>
-    <v-card class="pa-8 rounded-lg" outlined tile elevation="2">
-      <div class="mb-4">
+    <span v-if="!store().state.isAdmin">
+      <h3 class="light mt-8 mb-2">
         {{
-          new Intl.DateTimeFormat("en-GB", {
-            dateStyle: "long",
-          }).format(
-            reviewByStudent !== null
-              ? new Date(reviewByStudent["timestamp"])
-              : new Date()
-          )
+          reviewByStudent !== null ? "Update my review..." : "Write a review..."
         }}
-      </div>
-      <v-rating
-        v-model="rating"
-        class="mb-2"
-        color="primary"
-        background-color="primary"
-        dense
-        half-increments
-        size="28"
-      ></v-rating>
-      <h2>
-        <v-text-field
-          v-model="title"
-          counter="50"
-          label="Title"
-          filled
-        ></v-text-field>
-      </h2>
-      <v-textarea v-model="body" label="Body" filled></v-textarea>
-      <v-btn class="paleteal--text" color="secondary" @click="resetReview"
-        >Reset
-      </v-btn>
-      <v-btn class="paleteal--text ml-2" color="primary" @click="submitReview"
-        >{{ reviewByStudent !== null ? "Update" : "Submit" }}
-      </v-btn>
+      </h3>
+      <v-card class="pa-8 rounded-lg" outlined tile elevation="2">
+        <div class="mb-4">
+          {{
+            new Intl.DateTimeFormat("en-GB", {
+              dateStyle: "long",
+            }).format(
+              reviewByStudent !== null
+                ? new Date(reviewByStudent["timestamp"])
+                : new Date()
+            )
+          }}
+        </div>
+        <v-rating
+          v-model="rating"
+          class="mb-2"
+          color="primary"
+          background-color="primary"
+          dense
+          half-increments
+          size="28"
+        ></v-rating>
+        <h2>
+          <v-text-field
+            v-model="title"
+            counter="50"
+            label="Title"
+            filled
+          ></v-text-field>
+        </h2>
+        <v-textarea v-model="body" label="Body" filled></v-textarea>
+        <v-btn class="paleteal--text" color="secondary" @click="resetReview"
+          >Reset
+        </v-btn>
+        <v-btn class="paleteal--text ml-2" color="primary" @click="submitReview"
+          >{{ reviewByStudent !== null ? "Update" : "Submit" }}
+        </v-btn>
 
-      <v-dialog v-model="dialog" width="300px">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            v-bind="attrs"
-            v-on="on"
-            v-if="this.reviewByStudent !== null"
-            class="paleteal--text ml-2"
-            color="error"
-            >Delete
-          </v-btn>
-        </template>
-        <v-card>
-          <v-card-title>
-            <span>Are you sure?</span>
-          </v-card-title>
-          <v-card-text>Deleting your review is irreversible.</v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="dialog = false">Cancel</v-btn>
-            <v-btn color="error" text @click="deleteReview">Delete</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-card>
+        <v-dialog v-model="dialog" width="300px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              v-if="this.reviewByStudent !== null"
+              class="paleteal--text ml-2"
+              color="error"
+              >Delete
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span>Are you sure?</span>
+            </v-card-title>
+            <v-card-text>Deleting your review is irreversible.</v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" text @click="dialog = false">Cancel</v-btn>
+              <v-btn color="error" text @click="deleteReview">Delete</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-card>
+    </span>
   </div>
 </template>
 
@@ -180,6 +182,9 @@ export default {
     };
   },
   methods: {
+    store() {
+      return store;
+    },
     setIsTaking(value) {
       this.$emit("emitSetIsTaking", value);
     },
@@ -187,7 +192,7 @@ export default {
       this.$emit("emitSetIsBookmarked", value);
     },
     async loadOpportunity() {
-      // TODO: Check exceptions for stuff that may be null
+      // TODO: REMOVE ALL CONSOLE.LOGS
       console.log(this.id);
       let raw = await UserService.getOpportunity({ opportunityId: this.id });
       console.log("raw");

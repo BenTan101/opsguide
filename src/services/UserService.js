@@ -1,6 +1,103 @@
 import { api } from "@/services/api.js";
 
 export default {
+  /**** CREATE ****/
+  takeModule(credentials) {
+    return api("/take-module", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  bookmarkModule(credentials) {
+    return api("/bookmark-module", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  takeOpportunity(credentials) {
+    return api("/take-opportunity", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  bookmarkOpportunity(credentials) {
+    return api("/bookmark-opportunity", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  createOpportunity(credentials) {
+    return api("/create-opportunity", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  addYear(credentials) {
+    return api("/add-year", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  addSubject(credentials) {
+    return api("/add-subject", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  addTIC(credentials) {
+    return api("/add-tic", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  createReview(credentials) {
+    return api("/create-review", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  signup(credentials) {
+    console.log(JSON.stringify(credentials));
+    return api("/signup", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+
+  /**** READ ****/
+  getAllModules(credentials) {
+    console.log(JSON.stringify(credentials));
+    return api("/get-all-modules", {
+      method: "GET",
+      body: JSON.stringify(credentials),
+    });
+  },
+  getMyModules(credentials) {
+    console.log(JSON.stringify(credentials));
+    return api("/get-my-modules", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  getBookmarkedModules(credentials) {
+    console.log(JSON.stringify(credentials));
+    return api("/get-bookmarked-modules", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  checkTakeModule(credentials) {
+    return api("/is-module-taken", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  checkBookmarkModule(credentials) {
+    return api("/is-module-bookmarked", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
   getAllOpportunities() {
     return api("/get-all-opportunities", {
       method: "GET",
@@ -38,49 +135,21 @@ export default {
       body: JSON.stringify(credentials),
     });
   },
-  takeOpportunity(credentials) {
-    return api("/take-opportunity", {
+  getOpportunityByName(credentials) {
+    return api("/get-opportunity-by-name", {
       method: "POST",
       body: JSON.stringify(credentials),
     });
   },
-  bookmarkOpportunity(credentials) {
-    return api("/bookmark-opportunity", {
+  getDepartment(credentials) {
+    return api("/get-department", {
       method: "POST",
       body: JSON.stringify(credentials),
     });
   },
-  deleteTakeOpportunity(credentials) {
-    return api("/delete-take-opportunity", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  deleteBookmarkOpportunity(credentials) {
-    return api("/delete-bookmark-opportunity", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  getAllModules(credentials) {
-    console.log(JSON.stringify(credentials));
-    return api("/get-all-modules", {
+  getDepartments() {
+    return api("/get-departments", {
       method: "GET",
-      body: JSON.stringify(credentials),
-    });
-  },
-  getMyModules(credentials) {
-    console.log(JSON.stringify(credentials));
-    return api("/get-my-modules", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  getBookmarkedModules(credentials) {
-    console.log(JSON.stringify(credentials));
-    return api("/get-bookmarked-modules", {
-      method: "POST",
-      body: JSON.stringify(credentials),
     });
   },
   getApprovedReviews(credentials) {
@@ -106,73 +175,6 @@ export default {
       method: "GET",
     });
   },
-  // Create, update, delete Review
-  createReview(credentials) {
-    return api("/create-review", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  updateReview(credentials) {
-    return api("/update-review", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  deleteReview(credentials) {
-    return api("/delete-review", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  approveReview(credentials) {
-    return api("/approve-review", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  checkTakeModule(credentials) {
-    return api("/is-module-taken", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  checkBookmarkModule(credentials) {
-    return api("/is-module-bookmarked", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  takeModule(credentials) {
-    return api("/take-module", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  bookmarkModule(credentials) {
-    return api("/bookmark-module", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  deleteTakeModule(credentials) {
-    return api("/delete-take-module", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  deleteBookmarkModule(credentials) {
-    return api("/delete-bookmark-module", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  getDepartment(credentials) {
-    return api("/get-department", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
   login(credentials) {
     console.log(JSON.stringify(credentials));
     return api("/login", {
@@ -183,25 +185,6 @@ export default {
   adminLogin(credentials) {
     console.log(JSON.stringify(credentials));
     return api("/admin-login", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  signup(credentials) {
-    console.log(JSON.stringify(credentials));
-    return api("/signup", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  updateAdmin(credentials) {
-    return api("/update-admin", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  updateStudent(credentials) {
-    return api("/update-student", {
       method: "POST",
       body: JSON.stringify(credentials),
     });
@@ -221,16 +204,64 @@ export default {
       body: JSON.stringify(credentials),
     });
   },
-  isStudentOrAdmin(credentials) {
-    return this.isStudent(credentials) || this.isAdmin(credentials);
-  },
-  getDepartments() {
-    return api("/get-departments", {
+  getModuleData() {
+    return api("/get-module-data", {
       method: "GET",
     });
   },
-  createOpportunity(credentials) {
-    return api("/create-opportunity", {
+  getOpportunityData() {
+    return api("/get-opportunity-data", {
+      method: "GET",
+    });
+  },
+
+  /**** UPDATE ****/
+  updateReview(credentials) {
+    return api("/update-review", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  approveReview(credentials) {
+    return api("/approve-review", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  updateAdmin(credentials) {
+    return api("/update-admin", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  updateStudent(credentials) {
+    return api("/update-student", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+
+  /**** DELETE ****/
+  deleteTakeModule(credentials) {
+    return api("/delete-take-module", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  deleteBookmarkModule(credentials) {
+    return api("/delete-bookmark-module", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  deleteTakeOpportunity(credentials) {
+    return api("/delete-take-opportunity", {
+      method: "POST",
+      body: JSON.stringify(credentials),
+    });
+  },
+  deleteBookmarkOpportunity(credentials) {
+    return api("/delete-bookmark-opportunity", {
       method: "POST",
       body: JSON.stringify(credentials),
     });
@@ -241,26 +272,8 @@ export default {
       body: JSON.stringify(credentials),
     });
   },
-  getOpportunityByName(credentials) {
-    return api("/get-opportunity-by-name", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  addYear(credentials) {
-    return api("/add-year", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  addSubject(credentials) {
-    return api("/add-subject", {
-      method: "POST",
-      body: JSON.stringify(credentials),
-    });
-  },
-  addTIC(credentials) {
-    return api("/add-tic", {
+  deleteReview(credentials) {
+    return api("/delete-review", {
       method: "POST",
       body: JSON.stringify(credentials),
     });

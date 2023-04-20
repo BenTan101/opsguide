@@ -1,6 +1,6 @@
 <template>
   <div class="ma-16">
-    <div>
+    <div v-if="store().state.isLoggedIn">
       <div id="flexbox">
         <h3
           v-bind:class="getTabStyle('All')"
@@ -111,7 +111,6 @@ export default {
     };
   },
   methods: {
-    // TODO: Let admin add modules
     store() {
       return store;
     },
