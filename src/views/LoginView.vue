@@ -28,7 +28,12 @@
           : []
       "
     ></v-text-field>
-    <v-text-field label="Full name" filled v-model="name"></v-text-field>
+    <v-text-field
+      label="Full name"
+      filled
+      v-model="name"
+      counter="100"
+    ></v-text-field>
     <v-text-field
       label="Year of graduation"
       filled
@@ -48,12 +53,14 @@
       type="password"
       filled
       v-model="signupPassword"
+      counter="50"
     ></v-text-field>
     <v-text-field
       label="Retype password"
       type="password"
       filled
       v-model="signupPasswordRetyped"
+      counter="50"
       :error-messages="
         this.signupPassword !== this.signupPasswordRetyped
           ? ['Passwords do not match.']
@@ -184,9 +191,17 @@ export default {
       if (
         !functions.isEmailValid(this.signupEmail) ||
         !functions.isGraduationYearValid(this.graduationYear) ||
-        this.signupPassword !== this.signupPasswordRetyped
-      )
+        this.signupPassword !== this.signupPasswordRetyped ||
+        this.name.length > 100 ||
+        this.signupPassword.length > 50
+      ) {
+        this.$toasted.show("Please ensure that all fields have no errors.", {
+          type: "error",
+          theme: "bubble",
+          position: "top-center",
+        });
         return;
+      }
 
       console.log(
         this.signupEmail,

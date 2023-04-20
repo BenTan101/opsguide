@@ -105,7 +105,12 @@
         size="28"
       ></v-rating>
       <h2>
-        <v-text-field v-model="title" label="Title" filled></v-text-field>
+        <v-text-field
+          v-model="title"
+          counter="50"
+          label="Title"
+          filled
+        ></v-text-field>
       </h2>
       <v-textarea v-model="body" label="Body" filled></v-textarea>
       <v-btn class="paleteal--text" color="secondary" @click="resetReview"
@@ -120,6 +125,7 @@
           <v-btn
             v-bind="attrs"
             v-on="on"
+            v-if="this.reviewByStudent !== null"
             class="paleteal--text ml-2"
             color="error"
             >Delete
@@ -284,6 +290,7 @@ export default {
         Number.isFinite(this.rating) &&
         this.rating >= 1 &&
         this.title !== "" &&
+        this.title.length < 50 &&
         this.body !== ""
       );
     },
@@ -351,7 +358,7 @@ export default {
         );
       } else {
         this.$toasted.show(
-          "Please check that a rating of 1-5 is given and that the title and body are both filled up.",
+          "Please check that a rating of 1-5 is given and that the title and body are both filled up without error.",
           {
             type: "error",
             theme: "bubble",
